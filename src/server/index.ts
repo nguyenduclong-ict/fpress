@@ -13,7 +13,7 @@ class FPress {
     server: Server
     #services: any[] = []
 
-    create(server, app, options) {
+    create(server, app) {
         this.app = app || express()
         this.server = server || http.createServer(this.app)
         return this

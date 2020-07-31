@@ -32,7 +32,7 @@ class FPress {
     constructor() {
         _services.set(this, []);
     }
-    create(server, app, options) {
+    create(server, app) {
         this.app = app || express_1.default();
         this.server = server || http_1.default.createServer(this.app);
         return this;

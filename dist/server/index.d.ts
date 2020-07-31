@@ -5,7 +5,7 @@ declare class FPress {
     #private;
     app: Express;
     server: Server;
-    create(server: any, app: any, options: any): this;
+    create(server: any, app: any): this;
     registerService(service: any): this;
     registerAllService(path: any): this;
     start(): Promise<void>;
