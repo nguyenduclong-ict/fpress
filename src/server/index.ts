@@ -21,12 +21,14 @@ class FPress {
 
     registerService(service) {
         this.#services.push(service)
+        return this
     }
 
     registerAllService(path) {
         path = path || files.getCurrentDir() + '/services'
         const modules = importAll(path)
         modules.forEach(({ module }) => this.registerService(module))
+        return this
     }
 
     async start() {

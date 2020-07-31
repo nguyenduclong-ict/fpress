@@ -6,8 +6,8 @@ declare class FPress {
     app: Express;
     server: Server;
     create(server: any, app: any, options: any): this;
-    registerService(service: any): void;
-    registerAllService(path: any): void;
+    registerService(service: any): this;
+    registerAllService(path: any): this;
     start(): Promise<void>;
 }
 declare const _default: FPress;

@@ -39,11 +39,13 @@ class FPress {
     }
     registerService(service) {
         __classPrivateFieldGet(this, _services).push(service);
+        return this;
     }
     registerAllService(path) {
         path = path || files_1.default.getCurrentDir() + '/services';
         const modules = import_all_1.default(path);
         modules.forEach(({ module }) => this.registerService(module));
+        return this;
     }
     start() {
         return __awaiter(this, void 0, void 0, function* () {
