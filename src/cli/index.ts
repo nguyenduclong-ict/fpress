@@ -1,6 +1,8 @@
 import files from './files'
 import figlet from 'figlet'
 import logger from '../utils/logger'
+import { generateRouter } from './router'
+import { generateModel } from './model'
 
 let command = process.argv[2]
 
@@ -24,8 +26,6 @@ async function main() {
         exe.callback()
     }
 }
-
-function getOptions() {}
 
 function showLogo() {
     return new Promise((resolve) => {
@@ -51,16 +51,6 @@ function generate() {
     if (type === 'model') {
         generateModel(name)
     }
-}
-
-// GENERATE ROUTER
-function generateRouter(name) {
-    logger.info('Generate Router', name)
-}
-
-// GENERATE ROUTER
-function generateModel(name) {
-    logger.info('Generate Model', name)
 }
 
 // INIT NEW PROJECT

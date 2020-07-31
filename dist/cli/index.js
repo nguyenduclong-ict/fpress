@@ -14,6 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const figlet_1 = __importDefault(require("figlet"));
 const logger_1 = __importDefault(require("../utils/logger"));
+const router_1 = require("./router");
+const model_1 = require("./model");
 let command = process.argv[2];
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -36,7 +38,6 @@ function main() {
         }
     });
 }
-function getOptions() { }
 function showLogo() {
     return new Promise((resolve) => {
         figlet_1.default('FPRESS', function (err, data) {
@@ -55,19 +56,11 @@ function generate() {
     const type = process.argv[3];
     const name = process.argv[4];
     if (type === 'router') {
-        generateRouter(name);
+        router_1.generateRouter(name);
     }
     if (type === 'model') {
-        generateModel(name);
+        model_1.generateModel(name);
     }
-}
-// GENERATE ROUTER
-function generateRouter(name) {
-    logger_1.default.info('Generate Router', name);
-}
-// GENERATE ROUTER
-function generateModel(name) {
-    logger_1.default.info('Generate Model', name);
 }
 // INIT NEW PROJECT
 function initProject() {
