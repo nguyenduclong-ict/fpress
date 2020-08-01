@@ -23,4 +23,7 @@ exports.default = {
         warning: (text, ...args) => log(text, 'yellow', ...args),
         error: (text, ...args) => log(text, 'red', ...args),
     },
+    color: (color) => (...args) => {
+        console.log(chalk_1.default[color](...args));
+    },
 };

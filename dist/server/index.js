@@ -65,16 +65,17 @@ class FPress {
             // Handle Error
             this.app.use((error, req, res, next) => {
                 if (error) {
-                    logger_1.default.custom.error('[ROUTER ERORR]', error);
+                    logger_1.default.color('red')('[ROUTER ERORR]', error);
                     const code = error.code || 500;
                     if (error instanceof custom_error_1.default) {
                         return res.status(code).json({
+                            status: 'error',
                             code,
                             message: error.message,
                         });
                     }
                     else {
-                        return res.status(code).json(Object.assign({ code, message: error.message }, error));
+                        return res.status(code).json(Object.assign({ status: 'error', code, message: error.message }, error));
                     }
                 }
                 next();

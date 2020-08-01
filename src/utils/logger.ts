@@ -1,6 +1,5 @@
-import chalk from 'chalk'
+import chalk, { Color } from 'chalk'
 const log = (text, color, ...args) => console.log(chalk[color](text), ...args)
-
 export default {
     log(...args) {
         console.log(chalk.white('[LOG]'), ...args)
@@ -18,5 +17,8 @@ export default {
         info: (text, ...args) => log(text, 'green', ...args),
         warning: (text, ...args) => log(text, 'yellow', ...args),
         error: (text, ...args) => log(text, 'red', ...args),
+    },
+    color: (color: typeof Color) => (...args) => {
+        console.log(chalk[color](...args))
     },
 }
