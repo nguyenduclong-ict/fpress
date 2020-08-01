@@ -60,19 +60,18 @@ class FPress {
             if (process.env.STATIC_PATH) {
                 this.app.use(express_1.default.static(process.env.STATIC_PATH));
             }
+            // ROUTER
+            router_1.default(this.app);
             // Handle Error
             this.app.use((error, req, res, next) => {
-                if (error) {
-                    if (error instanceof custom_error_1.default) {
-                        res.status(error.code);
-                        res.send(error);
-                        res.end();
-                        return;
-                    }
+                if (error instanceof custom_error_1.default) {
+                    res.status(error.code);
+                    res.send(Object.assign({ message: error.message }, error));
+                    res.end();
+                    return;
                 }
                 next();
             });
-            router_1.default(this.app);
             // Start server
             const port = process.env.PORT || Math.floor(Math.random() * 65536);
             this.server.listen(port, () => {

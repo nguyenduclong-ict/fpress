@@ -46,19 +46,19 @@ class FPress {
         if (process.env.STATIC_PATH) {
             this.app.use(express.static(process.env.STATIC_PATH))
         }
+        // ROUTER
+        initRouter(this.app)
+
         // Handle Error
         this.app.use((error, req, res, next) => {
-            if (error) {
-                if (error instanceof CustomError) {
-                    res.status(error.code)
-                    res.send(error)
-                    res.end()
-                    return
-                }
+            if (error instanceof CustomError) {
+                res.status(error.code)
+                res.send({ message: error.message, ...error })
+                res.end()
+                return
             }
             next()
         })
-        initRouter(this.app)
 
         // Start server
         const port = process.env.PORT || Math.floor(Math.random() * 65536)
