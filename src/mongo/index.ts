@@ -10,26 +10,26 @@ export class Provider {
     }
 
     get findOne() {
-        return this.model.findOne
+        return this.model.findOne.bind(this.model)
     }
     get find() {
-        return this.model.find
+        return this.model.find.bind(this.model)
     }
     get findById() {
-        return this.model.findById
+        return this.model.findById.bind(this.model)
     }
 
     get deleteOne() {
-        return this.model.findOneAndDelete
+        return this.model.findOneAndDelete.bind(this.model)
     }
     get delete() {
-        return this.model.deleteMany
+        return this.model.deleteMany.bind(this.model)
     }
     createOne(doc) {
         return new this.model(doc).save()
     }
     get createMany() {
-        return this.model.insertMany
+        return this.model.insertMany.bind(this.model)
     }
     update(condition, data, options?) {
         return this.model.updateMany(condition, data, {
@@ -49,7 +49,7 @@ export class Provider {
     }
 
     // REST API
-    async restGetFind(req, res, next) {
+    restGetFind = async (req, res, next) => {
         try {
             let { query, populate, projection } = req.query as FindParams
             query = parseJSON(query)
@@ -68,7 +68,7 @@ export class Provider {
             )
         }
     }
-    async resFindBody(req, res, next) {
+    resFindBody = async (req, res, next) => {
         try {
             const { query, populate, projection } = req.body as FindParams
             const data = await this.findOne(query, projection, { populate })
@@ -85,9 +85,12 @@ export class Provider {
         }
     }
     // list with method GET
-    async restGetList(req, res, next) {
+    restGetList = async (req, res, next) => {
         try {
-            let result: { data; pager: Pagination }
+            let result: { data; pager: Pagination } = {
+                data: null,
+                pager: undefined,
+            }
             let {
                 query,
                 populate,
@@ -137,10 +140,14 @@ export class Provider {
             )
         }
     }
+
     // List by POST method
-    async restPostList(req, res, next) {
+    restPostList = async (req, res, next) => {
         try {
-            let result: { data; pager: Pagination }
+            let result: { data; pager: Pagination } = {
+                data: null,
+                pager: undefined,
+            }
             const {
                 query,
                 populate,
@@ -184,7 +191,7 @@ export class Provider {
         }
     }
 
-    async restCreateOne(req, res, next) {
+    restCreateOne = async (req, res, next) => {
         try {
             const data = req.body
             const doc = await this.createOne(data)
@@ -200,7 +207,7 @@ export class Provider {
             )
         }
     }
-    async restCreateMany(req, res, next) {
+    restCreateMany = async (req, res, next) => {
         try {
             const data = req.body
             const docs = await this.createMany(data)
@@ -216,7 +223,7 @@ export class Provider {
             )
         }
     }
-    async restUpdateOne(req, res, next) {
+    restUpdateOne = async (req, res, next) => {
         try {
             const docs = await this.updateOne({ _id: req.params.id }, req.body)
             res.json(docs)
@@ -231,7 +238,7 @@ export class Provider {
             )
         }
     }
-    async restUpdateMany(req, res, next) {
+    restUpdateMany = async (req, res, next) => {
         try {
             const { query, data, options } = req.body as UpdateManyParams
             const docs = await this.update(query, data, options)
@@ -247,7 +254,7 @@ export class Provider {
             )
         }
     }
-    async restDeleteOne(req, res, next) {
+    restDeleteOne = async (req, res, next) => {
         try {
             const docs = await this.deleteOne({ _id: req.params.id })
             res.json(docs)
@@ -262,7 +269,7 @@ export class Provider {
             )
         }
     }
-    async restDeleteMany(req, res, next) {
+    restDeleteMany = async (req, res, next) => {
         try {
             const docs = await this.delete(req.body)
             res.json(docs)
@@ -288,12 +295,8 @@ function formatPagination(pagination: Pagination): Pagination {
 }
 
 function parseJSON(data) {
-    if (typeof data === 'string') {
-        try {
-            return JSON.parse(data)
-        } catch (error) {
-            return data
-        }
-    }
+    try {
+        data = typeof data === 'string' ? JSON.parse(data) : data
+    } catch (error) {}
     return data
 }

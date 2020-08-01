@@ -16,38 +16,8 @@ const logger_1 = __importDefault(require("../utils/logger"));
 const custom_error_1 = __importDefault(require("../error/custom-error"));
 class Provider {
     constructor(model) {
-        this.model = model;
-    }
-    get findOne() {
-        return this.model.findOne;
-    }
-    get find() {
-        return this.model.find;
-    }
-    get findById() {
-        return this.model.findById;
-    }
-    get deleteOne() {
-        return this.model.findOneAndDelete;
-    }
-    get delete() {
-        return this.model.deleteMany;
-    }
-    createOne(doc) {
-        return new this.model(doc).save();
-    }
-    get createMany() {
-        return this.model.insertMany;
-    }
-    update(condition, data, options) {
-        return this.model.updateMany(condition, data, Object.assign({ new: true, setDefaultsOnInsert: true, upsert: false }, (options || {})));
-    }
-    updateOne(condition, data, options) {
-        return this.model.updateOne(condition, data, Object.assign({ new: true, setDefaultsOnInsert: true, upsert: false }, (options || {})));
-    }
-    // REST API
-    restGetFind(req, res, next) {
-        return __awaiter(this, void 0, void 0, function* () {
+        // REST API
+        this.restGetFind = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
                 let { query, populate, projection } = req.query;
                 query = parseJSON(query);
@@ -65,9 +35,7 @@ class Provider {
                 }));
             }
         });
-    }
-    resFindBody(req, res, next) {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.resFindBody = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const { query, populate, projection } = req.body;
                 const data = yield this.findOne(query, projection, { populate });
@@ -82,12 +50,13 @@ class Provider {
                 }));
             }
         });
-    }
-    // list with method GET
-    restGetList(req, res, next) {
-        return __awaiter(this, void 0, void 0, function* () {
+        // list with method GET
+        this.restGetList = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
-                let result;
+                let result = {
+                    data: null,
+                    pager: undefined,
+                };
                 let { query, populate, projection, pagination, sort, } = req.query;
                 // parse params
                 query = parseJSON(query);
@@ -127,12 +96,13 @@ class Provider {
                 }));
             }
         });
-    }
-    // List by POST method
-    restPostList(req, res, next) {
-        return __awaiter(this, void 0, void 0, function* () {
+        // List by POST method
+        this.restPostList = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
-                let result;
+                let result = {
+                    data: null,
+                    pager: undefined,
+                };
                 const { query, populate, projection, pagination, sort, } = req.body;
                 const task = this.find(query, projection, { populate });
                 sort && task.sort;
@@ -165,9 +135,7 @@ class Provider {
                 }));
             }
         });
-    }
-    restCreateOne(req, res, next) {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.restCreateOne = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const data = req.body;
                 const doc = yield this.createOne(data);
@@ -182,9 +150,7 @@ class Provider {
                 }));
             }
         });
-    }
-    restCreateMany(req, res, next) {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.restCreateMany = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const data = req.body;
                 const docs = yield this.createMany(data);
@@ -199,9 +165,7 @@ class Provider {
                 }));
             }
         });
-    }
-    restUpdateOne(req, res, next) {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.restUpdateOne = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const docs = yield this.updateOne({ _id: req.params.id }, req.body);
                 res.json(docs);
@@ -215,9 +179,7 @@ class Provider {
                 }));
             }
         });
-    }
-    restUpdateMany(req, res, next) {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.restUpdateMany = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const { query, data, options } = req.body;
                 const docs = yield this.update(query, data, options);
@@ -232,9 +194,7 @@ class Provider {
                 }));
             }
         });
-    }
-    restDeleteOne(req, res, next) {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.restDeleteOne = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const docs = yield this.deleteOne({ _id: req.params.id });
                 res.json(docs);
@@ -248,9 +208,7 @@ class Provider {
                 }));
             }
         });
-    }
-    restDeleteMany(req, res, next) {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.restDeleteMany = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const docs = yield this.delete(req.body);
                 res.json(docs);
@@ -264,6 +222,34 @@ class Provider {
                 }));
             }
         });
+        this.model = model;
+    }
+    get findOne() {
+        return this.model.findOne.bind(this.model);
+    }
+    get find() {
+        return this.model.find.bind(this.model);
+    }
+    get findById() {
+        return this.model.findById.bind(this.model);
+    }
+    get deleteOne() {
+        return this.model.findOneAndDelete.bind(this.model);
+    }
+    get delete() {
+        return this.model.deleteMany.bind(this.model);
+    }
+    createOne(doc) {
+        return new this.model(doc).save();
+    }
+    get createMany() {
+        return this.model.insertMany.bind(this.model);
+    }
+    update(condition, data, options) {
+        return this.model.updateMany(condition, data, Object.assign({ new: true, setDefaultsOnInsert: true, upsert: false }, (options || {})));
+    }
+    updateOne(condition, data, options) {
+        return this.model.updateOne(condition, data, Object.assign({ new: true, setDefaultsOnInsert: true, upsert: false }, (options || {})));
     }
 }
 exports.Provider = Provider;
@@ -275,13 +261,9 @@ function formatPagination(pagination) {
     return pagination;
 }
 function parseJSON(data) {
-    if (typeof data === 'string') {
-        try {
-            return JSON.parse(data);
-        }
-        catch (error) {
-            return data;
-        }
+    try {
+        data = typeof data === 'string' ? JSON.parse(data) : data;
     }
+    catch (error) { }
     return data;
 }
