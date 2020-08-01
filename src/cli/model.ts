@@ -50,11 +50,11 @@ export function generateModel(path, ...args) {
     fs.mkdirSync(modelPath, { recursive: true })
 
     fs.writeFileSync(
-        modelPath + '/model.js',
+        modelPath + `/${filename}.model.js`,
         MODEL_FILE.replace(/{name}/g, name).replace(/{filename}/g, filename)
     )
     fs.writeFileSync(
-        modelPath + '/provider.js',
+        modelPath + `/${filename}.provider.js`,
         PROVIDER_FILE.replace(/{name}/g, name).replace(/{filename}/g, filename)
     )
     fs.writeFileSync(

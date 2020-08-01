@@ -45,8 +45,8 @@ function generateModel(path, ...args) {
         return;
     }
     fs.mkdirSync(modelPath, { recursive: true });
-    fs.writeFileSync(modelPath + '/model.js', MODEL_FILE.replace(/{name}/g, name).replace(/{filename}/g, filename));
-    fs.writeFileSync(modelPath + '/provider.js', PROVIDER_FILE.replace(/{name}/g, name).replace(/{filename}/g, filename));
+    fs.writeFileSync(modelPath + `/${filename}.model.js`, MODEL_FILE.replace(/{name}/g, name).replace(/{filename}/g, filename));
+    fs.writeFileSync(modelPath + `/${filename}.provider.js`, PROVIDER_FILE.replace(/{name}/g, name).replace(/{filename}/g, filename));
     fs.writeFileSync(modelPath + '/index.js', INDEX_FILE.replace(/{name}/g, name).replace(/{filename}/g, filename));
 }
 exports.generateModel = generateModel;
