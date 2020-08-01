@@ -65,8 +65,7 @@ class FPress {
                 if (error) {
                     if (error instanceof custom_error_1.default) {
                         res.status(error.code);
-                        res.send(error.message);
-                        res.json(error.data);
+                        res.send(error);
                         res.end();
                         return;
                     }
