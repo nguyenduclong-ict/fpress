@@ -53,16 +53,18 @@ class FPress {
         this.app.use((error, req, res, next) => {
             if (error) {
                 logger.custom.error('[ROUTER ERORR]', error)
+                const code = error.code || 500
                 if (error instanceof CustomError) {
-                    res.status(error.code)
-                    res.send({ message: error.message, ...error })
-                    res.end()
-                    return
+                    return res.status(code).json({
+                        code,
+                        message: error.message,
+                    })
                 } else {
-                    res.status(500)
-                    res.send(error)
-                    res.end()
-                    return
+                    return res.status(code).json({
+                        code,
+                        message: error.message,
+                        ...error,
+                    })
                 }
             }
             next()
