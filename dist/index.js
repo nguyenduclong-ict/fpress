@@ -23,3 +23,5 @@ exports.crud = crud_1.default;
 const index_1 = __importStar(require("./validator/index"));
 exports.CreateValidator = index_1.default;
 exports.checks = index_1.checks;
+const alias_1 = __importDefault(require("./alias"));
+exports.registerAlias = alias_1.default;
