@@ -1,16 +1,17 @@
 {
-  "compilerOptions": {
-    "baseUrl": ".",
-    "module": "commonjs",
-    "esModuleInterop": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "allowJs": true,
-    "target": "es6",
-    "outDir": "dist",
-    "declaration": true
-  },
-  "include": ["src"],
-  "exclude": ["node_modules/**/*"],
-  "lib": ["es2015"]
+    "compilerOptions": {
+        "baseUrl": ".",
+        "module": "commonjs",
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "allowJs": true,
+        "lib": ["es6", "es2015", "dom"],
+        "target": "es6",
+        "outDir": "dist",
+        "declaration": true
+    },
+    "include": ["src"],
+    "exclude": ["node_modules/**/*"],
+    "lib": ["es2015"]
 }

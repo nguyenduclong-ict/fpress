@@ -1,4 +1,4 @@
-import files from './files'
+#!/usr/bin/env node
 import figlet from 'figlet'
 import logger from '../utils/logger'
 import { generateRouter } from './router'
@@ -29,7 +29,7 @@ async function main() {
 
 function showLogo() {
     return new Promise((resolve) => {
-        figlet('FPRESS', function (err, data) {
+        figlet('FPRESS', function (err: any, data: any) {
             if (err) {
                 console.log('Something went wrong...')
                 console.dir(err)
