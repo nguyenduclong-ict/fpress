@@ -1,9 +1,9 @@
-import Module from 'module'
-import path from 'path'
+const Module = require('module')
+const path = require('path')
 const packageJson = require(path.resolve(require.main.path, 'package.json'))
 const originalRequire = Module.prototype.require
 
-export function registerAlias(alias = packageJson._alias) {
+module.exports = function registerAlias(alias = packageJson._alias) {
     Module.prototype.require = function () {
         for (const key in alias) {
             if (alias.hasOwnProperty(key)) {
