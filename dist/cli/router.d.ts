@@ -1,1 +1,1 @@
-export declare function generateRouter(path: any): void;
+export declare function generateRouter(path?: string): void;

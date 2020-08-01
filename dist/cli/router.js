@@ -8,20 +8,18 @@ const Path = require('path');
 const logger_1 = __importDefault(require("../utils/logger"));
 const files_1 = __importDefault(require("./files"));
 const ROUTER_FILE = `
-const router = require('express').Router()
+const router = require("express").Router();
+const validator = require("./validator");
 // ------- Declare router -------
 
 // ------------------------------
-module.exports = router`.trim();
-const VALIDATOR_FILE = `
-const {CreateValidator, checks} = require('fpress')
-module.exports.ValidateBody = CreateValidator(
-    {},
-    "body"
-);
-
+module.exports = router;
 `.trim();
-function generateRouter(path) {
+const VALIDATOR_FILE = `
+const { CreateValidator, checks } = require("fpress");
+module.exports.ValidateBody = CreateValidator({}, "body");
+`.trim();
+function generateRouter(path = '') {
     const routerPath = Path.join(files_1.default.getCurrentDir(), 'routes', path);
     if (fs.existsSync(routerPath)) {
         logger_1.default.error('router', routerPath, 'exists');

@@ -4,22 +4,20 @@ import logger from '../utils/logger'
 import files from './files'
 
 const ROUTER_FILE = `
-const router = require('express').Router()
+const router = require("express").Router();
+const validator = require("./validator");
 // ------- Declare router -------
 
 // ------------------------------
-module.exports = router`.trim()
-
-const VALIDATOR_FILE = `
-const {CreateValidator, checks} = require('fpress')
-module.exports.ValidateBody = CreateValidator(
-    {},
-    "body"
-);
-
+module.exports = router;
 `.trim()
 
-export function generateRouter(path) {
+const VALIDATOR_FILE = `
+const { CreateValidator, checks } = require("fpress");
+module.exports.ValidateBody = CreateValidator({}, "body");
+`.trim()
+
+export function generateRouter(path = '') {
     const routerPath = Path.join(files.getCurrentDir(), 'routes', path)
     if (fs.existsSync(routerPath)) {
         logger.error('router', routerPath, 'exists')

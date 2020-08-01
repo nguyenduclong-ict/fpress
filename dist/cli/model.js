@@ -7,16 +7,17 @@ const files_1 = __importDefault(require("./files"));
 const fs = require('fs');
 const Path = require('path');
 const MODEL_FILE = `
-const { Schema, model } = require('mongoose')
-const { Types } = Schema
+const { Schema, model } = require("mongoose");
+const { Types } = Schema;
 
 const schema = new Schema({
-    createdAt: { type: Types.Date, default: Date.now },
-})
+  createdAt: { type: Types.Date, default: Date.now },
+});
 
 // HOOKS
 
-module.exports = model('{name}', schema)
+// END HOOKS
+module.exports = model("{name}", schema);
 `.trim();
 const PROVIDER_FILE = `
 import { Provider } from 'fpress'
@@ -27,10 +28,9 @@ class {name}Provider extends Provider {}
 module.exports = new {name}Provider({name})
 `.trim();
 const INDEX_FILE = `
-import {name} from './{filename}.model';
-import {name}Provider from './{filename}.provider';
-
-export { {name}, {name}Provider }
+const {name} = require("./{filename}.model");
+const {name}Provider = require("./{filename}.provider");
+export { {name}, {name}Provider };
 `;
 function generateModel(path, ...args) {
     path = path.split('/');
@@ -45,8 +45,8 @@ function generateModel(path, ...args) {
         return;
     }
     fs.mkdirSync(modelPath, { recursive: true });
-    fs.writeFileSync(modelPath + '/model.ts', MODEL_FILE.replace(/{name}/g, name).replace(/{filename}/, filename));
-    fs.writeFileSync(modelPath + '/provider.ts', PROVIDER_FILE.replace(/{name}/g, name).replace(/{filename}/, filename));
-    fs.writeFileSync(modelPath + '/index.ts', INDEX_FILE.replace(/{name}/g, name).replace(/{filename}/, filename));
+    fs.writeFileSync(modelPath + '/model.js', MODEL_FILE.replace(/{name}/g, name).replace(/{filename}/g, filename));
+    fs.writeFileSync(modelPath + '/provider.js', PROVIDER_FILE.replace(/{name}/g, name).replace(/{filename}/g, filename));
+    fs.writeFileSync(modelPath + '/index.js', INDEX_FILE.replace(/{name}/g, name).replace(/{filename}/g, filename));
 }
 exports.generateModel = generateModel;
