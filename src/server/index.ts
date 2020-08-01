@@ -51,11 +51,19 @@ class FPress {
 
         // Handle Error
         this.app.use((error, req, res, next) => {
-            if (error instanceof CustomError) {
-                res.status(error.code)
-                res.send({ message: error.message, ...error })
-                res.end()
-                return
+            if (error) {
+                logger.custom.error('[ROUTER ERORR]', error)
+                if (error instanceof CustomError) {
+                    res.status(error.code)
+                    res.send({ message: error.message, ...error })
+                    res.end()
+                    return
+                } else {
+                    res.status(500)
+                    res.send(error)
+                    res.end()
+                    return
+                }
             }
             next()
         })
