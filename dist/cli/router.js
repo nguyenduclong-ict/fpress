@@ -8,7 +8,8 @@ const Path = require('path');
 const logger_1 = __importDefault(require("../utils/logger"));
 const files_1 = __importDefault(require("./files"));
 const ROUTER_FILE = `
-const router = require("express").Router();
+const express = require('express')
+const router = express.Router()
 const validator = require("./validator");
 // ------- Declare router -------
 
