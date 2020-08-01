@@ -20,8 +20,8 @@ const schema = new Schema({
 module.exports = model("{name}", schema);
 `.trim();
 const PROVIDER_FILE = `
-import { Provider } from 'fpress'
-import {name} from './{filename}.model'
+const { Provider } = require('fpress')
+const {name} = require('./{filename}.model')
 
 class {name}Provider extends Provider {}
 
@@ -30,7 +30,7 @@ module.exports = new {name}Provider({name})
 const INDEX_FILE = `
 const {name} = require("./{filename}.model");
 const {name}Provider = require("./{filename}.provider");
-export { {name}, {name}Provider };
+module.exports = { {name}, {name}Provider };
 `;
 function generateModel(path, ...args) {
     path = path.split('/');
