@@ -23,7 +23,6 @@ export default async function (projectName) {
             rm -rf ${TMP_DIR}
             git clone ${EXAMPLE_PROJECT} ${TMP_DIR}
             cd ${TMP_DIR} && 
-            cp env.example.ts env.ts && 
             rm -rf .git && 
             git init && 
             yarn init -y

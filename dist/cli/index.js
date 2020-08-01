@@ -17,6 +17,7 @@ const figlet_1 = __importDefault(require("figlet"));
 const logger_1 = __importDefault(require("../utils/logger"));
 const router_1 = require("./router");
 const model_1 = require("./model");
+const project_1 = __importDefault(require("./project"));
 let command = process.argv[2];
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -67,5 +68,6 @@ function generate() {
 function initProject() {
     const name = process.argv[3];
     logger_1.default.info('Init new project', name);
+    project_1.default(name);
 }
 main();

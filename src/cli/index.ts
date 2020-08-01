@@ -3,7 +3,7 @@ import figlet from 'figlet'
 import logger from '../utils/logger'
 import { generateRouter } from './router'
 import { generateModel } from './model'
-
+import createProject from './project'
 let command = process.argv[2]
 
 async function main() {
@@ -57,6 +57,7 @@ function generate() {
 function initProject() {
     const name = process.argv[3]
     logger.info('Init new project', name)
+    createProject(name)
 }
 
 main()
