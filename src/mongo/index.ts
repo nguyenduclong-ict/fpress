@@ -114,7 +114,7 @@ export class Provider {
                 )
                 const [docs, total] = await Promise.all([
                     task,
-                    this.model.count(query),
+                    this.model.countDocuments(query),
                 ])
                 result.data = docs
                 result.pager = {
@@ -164,7 +164,7 @@ export class Provider {
                 )
                 const [docs, total] = await Promise.all([
                     task,
-                    this.model.count(query),
+                    this.model.countDocuments(query),
                 ])
                 result.data = docs
                 result.pager = {

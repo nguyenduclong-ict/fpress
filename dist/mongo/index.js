@@ -72,7 +72,7 @@ class Provider {
                     task.skip((pagination.page - 1) * pagination.pageSize).limit(pagination.pageSize);
                     const [docs, total] = yield Promise.all([
                         task,
-                        this.model.count(query),
+                        this.model.countDocuments(query),
                     ]);
                     result.data = docs;
                     result.pager = {
@@ -111,7 +111,7 @@ class Provider {
                     task.skip((pagination.page - 1) * pagination.pageSize).limit(pagination.pageSize);
                     const [docs, total] = yield Promise.all([
                         task,
-                        this.model.count(query),
+                        this.model.countDocuments(query),
                     ]);
                     result.data = docs;
                     result.pager = {
