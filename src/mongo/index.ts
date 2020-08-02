@@ -109,7 +109,7 @@ export class Provider {
             sort && task.sort
             if (pagination) {
                 formatPagination(pagination)
-                task.skip(pagination.page * pagination.pageSize).limit(
+                task.skip((pagination.page - 1) * pagination.pageSize).limit(
                     pagination.pageSize
                 )
                 const [docs, total] = await Promise.all([
@@ -159,7 +159,7 @@ export class Provider {
             sort && task.sort
             if (pagination) {
                 formatPagination(pagination)
-                task.skip(pagination.page * pagination.pageSize).limit(
+                task.skip((pagination.page - 1) * pagination.pageSize).limit(
                     pagination.pageSize
                 )
                 const [docs, total] = await Promise.all([
@@ -287,7 +287,7 @@ export class Provider {
 }
 
 function formatPagination(pagination: Pagination): Pagination {
-    pagination.page = Number(pagination.page) || 0
+    pagination.page = Number(pagination.page) || 1
     pagination.pageSize = Number(pagination.pageSize) || 10
     pagination.total = Number(pagination.total) || 0
     pagination.totalPages = Number(pagination.totalPages) || 0

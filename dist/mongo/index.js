@@ -69,7 +69,7 @@ class Provider {
                 sort && task.sort;
                 if (pagination) {
                     formatPagination(pagination);
-                    task.skip(pagination.page * pagination.pageSize).limit(pagination.pageSize);
+                    task.skip((pagination.page - 1) * pagination.pageSize).limit(pagination.pageSize);
                     const [docs, total] = yield Promise.all([
                         task,
                         this.model.count(query),
@@ -108,7 +108,7 @@ class Provider {
                 sort && task.sort;
                 if (pagination) {
                     formatPagination(pagination);
-                    task.skip(pagination.page * pagination.pageSize).limit(pagination.pageSize);
+                    task.skip((pagination.page - 1) * pagination.pageSize).limit(pagination.pageSize);
                     const [docs, total] = yield Promise.all([
                         task,
                         this.model.count(query),
@@ -254,7 +254,7 @@ class Provider {
 }
 exports.Provider = Provider;
 function formatPagination(pagination) {
-    pagination.page = Number(pagination.page) || 0;
+    pagination.page = Number(pagination.page) || 1;
     pagination.pageSize = Number(pagination.pageSize) || 10;
     pagination.total = Number(pagination.total) || 0;
     pagination.totalPages = Number(pagination.totalPages) || 0;
