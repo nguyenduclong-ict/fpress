@@ -249,7 +249,7 @@ class Provider {
         return this.model.updateMany(condition, data, Object.assign({ new: true, setDefaultsOnInsert: true, upsert: false }, (options || {})));
     }
     updateOne(condition, data, options) {
-        return this.model.updateOne(condition, data, Object.assign({ new: true, setDefaultsOnInsert: true, upsert: false }, (options || {})));
+        return this.model.findOneAndUpdate(condition, data, Object.assign({ new: true, setDefaultsOnInsert: true, upsert: false }, (options || {})));
     }
 }
 exports.Provider = Provider;

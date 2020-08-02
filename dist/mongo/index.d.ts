@@ -10,7 +10,7 @@ export declare class Provider {
     createOne(doc: any): Promise<Document>;
     get createMany(): any;
     update(condition: any, data: any, options?: any): import("mongoose").Query<any>;
-    updateOne(condition: any, data: any, options?: any): import("mongoose").Query<any>;
+    updateOne(condition: any, data: any, options?: any): import("mongoose").DocumentQuery<Document, Document, {}>;
     restGetFind: (req: any, res: any, next: any) => Promise<void>;
     resFindBody: (req: any, res: any, next: any) => Promise<void>;
     restGetList: (req: any, res: any, next: any) => Promise<void>;

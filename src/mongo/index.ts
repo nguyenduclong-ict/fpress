@@ -40,7 +40,7 @@ export class Provider {
         })
     }
     updateOne(condition, data, options?) {
-        return this.model.updateOne(condition, data, {
+        return this.model.findOneAndUpdate(condition, data, {
             new: true,
             setDefaultsOnInsert: true,
             upsert: false,
