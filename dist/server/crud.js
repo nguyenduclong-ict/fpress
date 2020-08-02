@@ -8,6 +8,11 @@ const validateMiddlewareOptions = (options) => {
     options.create = options.create || [];
     options.update = options.update || [];
     options.delete = options.delete || [];
+    Object.keys(options).forEach((key) => {
+        if (!Array.isArray(options[key])) {
+            options[key] = [options[key]];
+        }
+    });
     return options;
 };
 function default_1(router, provider, middleware) {
