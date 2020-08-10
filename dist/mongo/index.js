@@ -39,7 +39,7 @@ class Provider {
                 query = parseJSON(query);
                 populate = parseJSON(populate);
                 projection = parseJSON(projection);
-                const data = yield this.find(query, projection, { populate, sort }, { req });
+                const data = yield this.find(query, projection, { populate, sort }, { req, res, next });
                 res.json(data);
             }
             catch (error) {
@@ -57,7 +57,7 @@ class Provider {
                 query = parseJSON(query);
                 populate = parseJSON(populate);
                 projection = parseJSON(projection);
-                const data = yield this.findOne(query, projection, { populate }, { req });
+                const data = yield this.findOne(query, projection, { populate }, { req, res, next });
                 res.json(data);
             }
             catch (error) {
@@ -83,7 +83,11 @@ class Provider {
                 formatPagination(pagination);
                 options.skip = (pagination.page - 1) * pagination.pageSize;
                 options.limit = pagination.pageSize;
-                const task = this.find(query, projection, options, { req });
+                const task = this.find(query, projection, options, {
+                    req,
+                    res,
+                    next,
+                });
                 const [docs, total] = yield Promise.all([
                     task,
                     this.model.countDocuments(query),
@@ -111,7 +115,7 @@ class Provider {
         this.restCreateOne = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const data = req.body;
-                const doc = yield this.createOne(data, { req });
+                const doc = yield this.createOne(data, { req, res, next });
                 res.json(doc);
             }
             catch (error) {
@@ -126,7 +130,7 @@ class Provider {
         this.restCreateMany = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const data = req.body;
-                const docs = yield this.createMany(data, {}, { req });
+                const docs = yield this.createMany(data, {}, { req, res, next });
                 res.json(docs);
             }
             catch (error) {
@@ -140,7 +144,7 @@ class Provider {
         });
         this.restUpdateOne = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const docs = yield this.updateOne({ _id: req.params.id }, req.body, {}, { req });
+                const docs = yield this.updateOne({ _id: req.params.id }, req.body, {}, { req, res, next });
                 res.json(docs);
             }
             catch (error) {
@@ -155,7 +159,11 @@ class Provider {
         this.restUpdateMany = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const { query, data, options } = req.body;
-                const docs = yield this.update(query, data, options, { req });
+                const docs = yield this.update(query, data, options, {
+                    req,
+                    res,
+                    next,
+                });
                 res.json(docs);
             }
             catch (error) {
@@ -169,7 +177,7 @@ class Provider {
         });
         this.restDeleteOne = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const docs = yield this.deleteOne({ _id: req.params.id }, {}, { req });
+                const docs = yield this.deleteOne({ _id: req.params.id }, {}, { req, res, next });
                 res.json(docs);
             }
             catch (error) {
@@ -183,7 +191,7 @@ class Provider {
         });
         this.restDeleteMany = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const docs = yield this.delete(req.body, {}, { req });
+                const docs = yield this.delete(req.body, {}, { req, res, next });
                 res.json(docs);
             }
             catch (error) {

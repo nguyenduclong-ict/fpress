@@ -239,7 +239,7 @@ export class Provider {
                 query,
                 projection,
                 { populate, sort },
-                { req }
+                { req, res, next }
             )
             res.json(data)
         } catch (error) {
@@ -271,7 +271,7 @@ export class Provider {
                 query,
                 projection,
                 { populate },
-                { req }
+                { req, res, next }
             )
             res.json(data)
         } catch (error) {
@@ -310,7 +310,11 @@ export class Provider {
             options.skip = (pagination.page - 1) * pagination.pageSize
             options.limit = pagination.pageSize
 
-            const task = this.find(query, projection, options, { req })
+            const task = this.find(query, projection, options, {
+                req,
+                res,
+                next,
+            })
             const [docs, total] = await Promise.all([
                 task,
                 this.model.countDocuments(query),
@@ -345,7 +349,7 @@ export class Provider {
     restCreateOne = async (req, res, next) => {
         try {
             const data = req.body
-            const doc = await this.createOne(data, { req })
+            const doc = await this.createOne(data, { req, res, next })
             res.json(doc)
         } catch (error) {
             logger.error(`restCreate ${this.model.name} Error`, req.path, error)
@@ -361,7 +365,7 @@ export class Provider {
     restCreateMany = async (req, res, next) => {
         try {
             const data = req.body
-            const docs = await this.createMany(data, {}, { req })
+            const docs = await this.createMany(data, {}, { req, res, next })
             res.json(docs)
         } catch (error) {
             logger.error(
@@ -384,7 +388,7 @@ export class Provider {
                 { _id: req.params.id },
                 req.body,
                 {},
-                { req }
+                { req, res, next }
             )
             res.json(docs)
         } catch (error) {
@@ -405,7 +409,11 @@ export class Provider {
     restUpdateMany = async (req, res, next) => {
         try {
             const { query, data, options } = req.body as UpdateManyParams
-            const docs = await this.update(query, data, options, { req })
+            const docs = await this.update(query, data, options, {
+                req,
+                res,
+                next,
+            })
             res.json(docs)
         } catch (error) {
             logger.error(
@@ -427,7 +435,7 @@ export class Provider {
             const docs = await this.deleteOne(
                 { _id: req.params.id },
                 {},
-                { req }
+                { req, res, next }
             )
             res.json(docs)
         } catch (error) {
@@ -447,7 +455,7 @@ export class Provider {
     }
     restDeleteMany = async (req, res, next) => {
         try {
-            const docs = await this.delete(req.body, {}, { req })
+            const docs = await this.delete(req.body, {}, { req, res, next })
             res.json(docs)
         } catch (error) {
             logger.error(
