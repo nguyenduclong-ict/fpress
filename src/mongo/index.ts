@@ -296,10 +296,6 @@ export class Provider {
         next
     ) => {
         try {
-            let result: { data; pager: Pagination } = {
-                data: null,
-                pager: undefined,
-            }
             let { query, populate, projection, pagination, sort } = req[
                 target
             ] as ListParams
@@ -313,17 +309,21 @@ export class Provider {
             formatPagination(pagination)
             options.skip = (pagination.page - 1) * pagination.pageSize
             options.limit = pagination.pageSize
+
             const task = this.find(query, projection, options, { req })
             const [docs, total] = await Promise.all([
                 task,
                 this.model.countDocuments(query),
             ])
-            result.data = docs
-            result.pager = {
-                page: pagination.page,
-                pageSize: pagination.pageSize,
-                total,
-                totalPages: Math.ceil(total / pagination.pageSize),
+
+            const result = {
+                data: docs,
+                pager: {
+                    page: pagination.page,
+                    pageSize: pagination.pageSize,
+                    total,
+                    totalPages: Math.ceil(total / pagination.pageSize),
+                },
             }
             res.json(result)
         } catch (error) {

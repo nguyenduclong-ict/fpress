@@ -72,10 +72,6 @@ class Provider {
         // list with method GET
         this.restList = (target = 'query') => (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
-                let result = {
-                    data: null,
-                    pager: undefined,
-                };
                 let { query, populate, projection, pagination, sort } = req[target];
                 // parse params
                 query = parseJSON(query);
@@ -92,12 +88,14 @@ class Provider {
                     task,
                     this.model.countDocuments(query),
                 ]);
-                result.data = docs;
-                result.pager = {
-                    page: pagination.page,
-                    pageSize: pagination.pageSize,
-                    total,
-                    totalPages: Math.ceil(total / pagination.pageSize),
+                const result = {
+                    data: docs,
+                    pager: {
+                        page: pagination.page,
+                        pageSize: pagination.pageSize,
+                        total,
+                        totalPages: Math.ceil(total / pagination.pageSize),
+                    },
                 };
                 res.json(result);
             }
