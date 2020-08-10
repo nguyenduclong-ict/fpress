@@ -88,7 +88,12 @@ export class Provider {
         if (typeof this.#preFindById === 'function') {
             this.#preFindById.call(this, id, projection, options)
         }
-        let result = await this.model.findById.bind(this.model)
+        let result = await this.model.findById.call(
+            this.model,
+            id,
+            projection,
+            options
+        )
         if (typeof this.#afterFindById === 'function') {
             this.#afterFindById.call(this, id, projection, options, result)
         }
@@ -118,7 +123,11 @@ export class Provider {
         if (typeof this.#preDeleteMany === 'function') {
             await this.#preDeleteMany.call(this, conditions, options, inject)
         }
-        let result = await this.model.deleteMany.bind(this.model)
+        let result = await this.model.deleteMany.call(
+            this.model,
+            conditions,
+            options
+        )
         if (typeof this.#afterDeleteMany === 'function') {
             result = await this.#afterDeleteMany.call(
                 this,

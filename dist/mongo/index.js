@@ -255,7 +255,7 @@ class Provider {
             if (typeof __classPrivateFieldGet(this, _preFindById) === 'function') {
                 __classPrivateFieldGet(this, _preFindById).call(this, id, projection, options);
             }
-            let result = yield this.model.findById.bind(this.model);
+            let result = yield this.model.findById.call(this.model, id, projection, options);
             if (typeof __classPrivateFieldGet(this, _afterFindById) === 'function') {
                 __classPrivateFieldGet(this, _afterFindById).call(this, id, projection, options, result);
             }
@@ -279,7 +279,7 @@ class Provider {
             if (typeof __classPrivateFieldGet(this, _preDeleteMany) === 'function') {
                 yield __classPrivateFieldGet(this, _preDeleteMany).call(this, conditions, options, inject);
             }
-            let result = yield this.model.deleteMany.bind(this.model);
+            let result = yield this.model.deleteMany.call(this.model, conditions, options);
             if (typeof __classPrivateFieldGet(this, _afterDeleteMany) === 'function') {
                 result = yield __classPrivateFieldGet(this, _afterDeleteMany).call(this, conditions, options, inject, result);
             }
