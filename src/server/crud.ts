@@ -36,8 +36,8 @@ export default function (
     router.get('/find', ...m.all, ...m.find, provider.restFind('query'))
     router.post('/find', ...m.all, ...m.find, provider.restFind('body'))
     // Find one
-    router.post('/find-one', ...m.all, ...m.find, provider.restFindOne('query'))
-    router.get('/find-one', ...m.all, ...m.find, provider.restFindOne('body'))
+    router.get('/find-one', ...m.all, ...m.find, provider.restFindOne('query'))
+    router.post('/find-one', ...m.all, ...m.find, provider.restFindOne('body'))
     // List
     router.get('/', ...m.all, ...m.list, provider.restList('query'))
     router.post('/list', ...m.all, ...m.list, provider.restList('body'))
