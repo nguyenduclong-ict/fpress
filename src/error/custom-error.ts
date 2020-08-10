@@ -1,9 +1,16 @@
 export default class CustomError extends Error {
     code: number
     data: any
-    constructor({ message = '', code = 500, data = null }) {
+    type
+    constructor({
+        message = '',
+        code = 500,
+        data = null,
+        type = 'CustomError',
+    }) {
         super(message)
         this.code = code
         this.data = data
+        this.type = type
     }
 }
