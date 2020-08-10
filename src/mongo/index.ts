@@ -52,14 +52,15 @@ export class Provider {
             options
         )
         if (typeof this.$afterFindOne === 'function') {
-            result = await this.$afterFindOne.call(
-                this,
-                conditions,
-                projection,
-                options,
-                inject,
-                result
-            )
+            result =
+                (await this.$afterFindOne.call(
+                    this,
+                    conditions,
+                    projection,
+                    options,
+                    inject,
+                    result
+                )) || result
         }
         return result
     }
@@ -74,14 +75,15 @@ export class Provider {
             options
         )
         if (typeof this.$afterFind === 'function') {
-            result = await this.$afterFind.call(
-                this,
-                conditions,
-                projection,
-                options,
-                inject,
-                result
-            )
+            result =
+                (await this.$afterFind.call(
+                    this,
+                    conditions,
+                    projection,
+                    options,
+                    inject,
+                    result
+                )) || result
         }
         return result
     }
@@ -110,13 +112,14 @@ export class Provider {
             options
         )
         if (typeof this.$afterDeleteOne === 'function') {
-            result = this.$afterDeleteOne.call(
-                this,
-                conditions,
-                options,
-                inject,
-                result
-            )
+            result =
+                (await this.$afterDeleteOne.call(
+                    this,
+                    conditions,
+                    options,
+                    inject,
+                    result
+                )) || result
         }
         return result
     }
@@ -130,13 +133,14 @@ export class Provider {
             options
         )
         if (typeof this.$afterDeleteMany === 'function') {
-            result = await this.$afterDeleteMany.call(
-                this,
-                conditions,
-                options,
-                inject,
-                result
-            )
+            result =
+                (await this.$afterDeleteMany.call(
+                    this,
+                    conditions,
+                    options,
+                    inject,
+                    result
+                )) || result
         }
         return result
     }
@@ -147,7 +151,9 @@ export class Provider {
         }
         let result = await new this.model(doc).save()
         if (typeof this.$afterCreateOne === 'function') {
-            result = await this.$afterCreateOne.call(this, doc, inject, result)
+            result =
+                (await this.$afterCreateOne.call(this, doc, inject, result)) ||
+                result
         }
         return result
     }
@@ -157,13 +163,14 @@ export class Provider {
         }
         let result = await this.model.insertMany.call(this.model, docs, options)
         if (typeof this.$afterCreateMany === 'function') {
-            result = await this.$afterCreateMany.call(
-                this,
-                docs,
-                options,
-                inject,
-                result
-            )
+            result =
+                (await this.$afterCreateMany.call(
+                    this,
+                    docs,
+                    options,
+                    inject,
+                    result
+                )) || result
         }
         return result
     }
@@ -186,14 +193,15 @@ export class Provider {
             ...(options || {}),
         })
         if (typeof this.$afterUpdateMany === 'function') {
-            result = await this.$afterUpdateMany.call(
-                this,
-                conditions,
-                data,
-                options,
-                inject,
-                result
-            )
+            result =
+                (await this.$afterUpdateMany.call(
+                    this,
+                    conditions,
+                    data,
+                    options,
+                    inject,
+                    result
+                )) || result
         }
         return result
     }
@@ -214,14 +222,15 @@ export class Provider {
             ...options,
         })
         if (typeof this.$afterUpdateOne === 'function') {
-            result = await this.$afterUpdateOne.call(
-                this,
-                condition,
-                data,
-                options,
-                inject,
-                result
-            )
+            result =
+                (await this.$afterUpdateOne.call(
+                    this,
+                    condition,
+                    data,
+                    options,
+                    inject,
+                    result
+                )) || result
         }
         return result
     }

@@ -215,7 +215,8 @@ class Provider {
             }
             let result = yield this.model.findOne.call(this.model, conditions, projection, options);
             if (typeof this.$afterFindOne === 'function') {
-                result = yield this.$afterFindOne.call(this, conditions, projection, options, inject, result);
+                result =
+                    (yield this.$afterFindOne.call(this, conditions, projection, options, inject, result)) || result;
             }
             return result;
         });
@@ -227,7 +228,8 @@ class Provider {
             }
             let result = yield this.model.find.call(this.model, conditions, projection, options);
             if (typeof this.$afterFind === 'function') {
-                result = yield this.$afterFind.call(this, conditions, projection, options, inject, result);
+                result =
+                    (yield this.$afterFind.call(this, conditions, projection, options, inject, result)) || result;
             }
             return result;
         });
@@ -251,7 +253,8 @@ class Provider {
             }
             let result = yield this.model.findOneAndDelete.call(this.model, conditions, options);
             if (typeof this.$afterDeleteOne === 'function') {
-                result = this.$afterDeleteOne.call(this, conditions, options, inject, result);
+                result =
+                    (yield this.$afterDeleteOne.call(this, conditions, options, inject, result)) || result;
             }
             return result;
         });
@@ -263,7 +266,8 @@ class Provider {
             }
             let result = yield this.model.deleteMany.call(this.model, conditions, options);
             if (typeof this.$afterDeleteMany === 'function') {
-                result = yield this.$afterDeleteMany.call(this, conditions, options, inject, result);
+                result =
+                    (yield this.$afterDeleteMany.call(this, conditions, options, inject, result)) || result;
             }
             return result;
         });
@@ -276,7 +280,9 @@ class Provider {
             }
             let result = yield new this.model(doc).save();
             if (typeof this.$afterCreateOne === 'function') {
-                result = yield this.$afterCreateOne.call(this, doc, inject, result);
+                result =
+                    (yield this.$afterCreateOne.call(this, doc, inject, result)) ||
+                        result;
             }
             return result;
         });
@@ -288,7 +294,8 @@ class Provider {
             }
             let result = yield this.model.insertMany.call(this.model, docs, options);
             if (typeof this.$afterCreateMany === 'function') {
-                result = yield this.$afterCreateMany.call(this, docs, options, inject, result);
+                result =
+                    (yield this.$afterCreateMany.call(this, docs, options, inject, result)) || result;
             }
             return result;
         });
@@ -301,7 +308,8 @@ class Provider {
             }
             let result = yield this.model.updateMany(conditions, data, Object.assign({ new: true, setDefaultsOnInsert: true, upsert: false }, (options || {})));
             if (typeof this.$afterUpdateMany === 'function') {
-                result = yield this.$afterUpdateMany.call(this, conditions, data, options, inject, result);
+                result =
+                    (yield this.$afterUpdateMany.call(this, conditions, data, options, inject, result)) || result;
             }
             return result;
         });
@@ -313,7 +321,8 @@ class Provider {
             }
             let result = yield this.model.findOneAndUpdate(condition, data, Object.assign({ new: true, setDefaultsOnInsert: true, upsert: false }, options));
             if (typeof this.$afterUpdateOne === 'function') {
-                result = yield this.$afterUpdateOne.call(this, condition, data, options, inject, result);
+                result =
+                    (yield this.$afterUpdateOne.call(this, condition, data, options, inject, result)) || result;
             }
             return result;
         });

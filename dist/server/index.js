@@ -64,6 +64,7 @@ class FPress {
             router_1.default(this.app);
             // Handle Error
             this.app.use((error, req, res, next) => {
+                var _a, _b, _c;
                 if (error) {
                     logger_1.default.custom.error('[ROUTER ERORR]', error);
                     // error code
@@ -76,7 +77,8 @@ class FPress {
                         return res.status(code).json({
                             status: 'error',
                             code,
-                            message: error.message,
+                            message: ((_b = (_a = error.data) === null || _a === void 0 ? void 0 : _a.errors) === null || _b === void 0 ? void 0 : _b[0]) || ((_c = error.data) === null || _c === void 0 ? void 0 : _c.message) ||
+                                error.message,
                             type: error.type,
                         });
                     }
