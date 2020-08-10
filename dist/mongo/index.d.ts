@@ -1,6 +1,24 @@
 import { Model, Document } from 'mongoose';
 export declare class Provider {
     #private;
+    $preCreateOne: (doc: any, inject: any) => any;
+    $preCreateMany: (doc: any, options: any, inject: any) => any;
+    $preUpdateOne: (conditions: any, data: any, options: any, inject: any) => any;
+    $preUpdateMany: (conditions: any, data: any, options: any, inject: any) => any;
+    $preDeleteOne: (conditions: any, options: any, inject: any) => any;
+    $preDeleteMany: (conditions: any, options: any, inject: any) => any;
+    $preFind: (conditions: any, projection: any, options: any, inject: any) => any;
+    $preFindOne: (conditions: any, projection: any, options: any, inject: any) => any;
+    $preFindById: (id: any, projection: any, options: any) => any;
+    $afterCreateOne: (doc: any, inject: any, result: any) => any;
+    $afterCreateMany: (docs: any, options: any, inject: any, result: any) => any;
+    $afterUpdateOne: (condition: any, data: any, options: any, inject: any, result: any) => any;
+    $afterUpdateMany: (condition: any, data: any, options: any, inject: any, result: any) => any;
+    $afterDeleteOne: (condition: any, options: any, inject: any, result: any) => any;
+    $afterDeleteMany: (condition: any, options: any, inject: any, result: any) => any;
+    $afterFind: (conditions: any, projection: any, options: any, inject: any, result: any) => any;
+    $afterFindOne: (conditions: any, projection: any, options: any, inject: any, result: any) => any;
+    $afterFindById: (id: any, projection: any, options: any, result: any) => any;
     constructor(model: any);
     get model(): Model<Document, {}>;
     findOne(conditions: any, projection?: any, options?: any, inject?: {}): Promise<any>;

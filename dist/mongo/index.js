@@ -24,7 +24,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _model, _preCreateOne, _preCreateMany, _preUpdateOne, _preUpdateMany, _preDeleteOne, _preDeleteMany, _preFind, _preFindOne, _preFindById, _afterCreateOne, _afterCreateMany, _afterUpdateOne, _afterUpdateMany, _afterDeleteOne, _afterDeleteMany, _afterFind, _afterFindOne, _afterFindById;
+var _model;
 Object.defineProperty(exports, "__esModule", { value: true });
 const logger_1 = __importDefault(require("../utils/logger"));
 const custom_error_1 = __importDefault(require("../error/custom-error"));
@@ -32,27 +32,6 @@ class Provider {
     // END HOOKS
     constructor(model) {
         _model.set(this, void 0);
-        // DECLARE HOOKS
-        // PRE
-        _preCreateOne.set(this, void 0);
-        _preCreateMany.set(this, void 0);
-        _preUpdateOne.set(this, void 0);
-        _preUpdateMany.set(this, void 0);
-        _preDeleteOne.set(this, void 0);
-        _preDeleteMany.set(this, void 0);
-        _preFind.set(this, void 0);
-        _preFindOne.set(this, void 0);
-        _preFindById.set(this, void 0);
-        // AFTER
-        _afterCreateOne.set(this, void 0);
-        _afterCreateMany.set(this, void 0);
-        _afterUpdateOne.set(this, void 0);
-        _afterUpdateMany.set(this, void 0);
-        _afterDeleteOne.set(this, void 0);
-        _afterDeleteMany.set(this, void 0);
-        _afterFind.set(this, void 0);
-        _afterFindOne.set(this, void 0);
-        _afterFindById.set(this, void 0);
         // REST API
         this.restFind = (target = 'query') => (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
@@ -225,60 +204,60 @@ class Provider {
     }
     findOne(conditions, projection, options, inject = {}) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (typeof __classPrivateFieldGet(this, _preFindOne) === 'function') {
-                __classPrivateFieldGet(this, _preFindOne).call(this, conditions, projection, options, inject);
+            if (typeof this.$preFindOne === 'function') {
+                this.$preFindOne.call(this, conditions, projection, options, inject);
             }
             let result = yield this.model.findOne.call(this.model, conditions, projection, options);
-            if (typeof __classPrivateFieldGet(this, _afterFindOne) === 'function') {
-                result = yield __classPrivateFieldGet(this, _afterFindOne).call(this, conditions, projection, options, inject, result);
+            if (typeof this.$afterFindOne === 'function') {
+                result = yield this.$afterFindOne.call(this, conditions, projection, options, inject, result);
             }
             return result;
         });
     }
     find(conditions, projection, options, inject = {}) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (typeof __classPrivateFieldGet(this, _preFind) === 'function') {
-                __classPrivateFieldGet(this, _preFind).call(this, conditions, projection, options, inject);
+            if (typeof this.$preFind === 'function') {
+                this.$preFind.call(this, conditions, projection, options, inject);
             }
             let result = yield this.model.find.call(this.model, conditions, projection, options);
-            if (typeof __classPrivateFieldGet(this, _afterFind) === 'function') {
-                result = yield __classPrivateFieldGet(this, _afterFind).call(this, conditions, projection, options, inject, result);
+            if (typeof this.$afterFind === 'function') {
+                result = yield this.$afterFind.call(this, conditions, projection, options, inject, result);
             }
             return result;
         });
     }
     findById(id, projection, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (typeof __classPrivateFieldGet(this, _preFindById) === 'function') {
-                __classPrivateFieldGet(this, _preFindById).call(this, id, projection, options);
+            if (typeof this.$preFindById === 'function') {
+                this.$preFindById.call(this, id, projection, options);
             }
             let result = yield this.model.findById.call(this.model, id, projection, options);
-            if (typeof __classPrivateFieldGet(this, _afterFindById) === 'function') {
-                __classPrivateFieldGet(this, _afterFindById).call(this, id, projection, options, result);
+            if (typeof this.$afterFindById === 'function') {
+                this.$afterFindById.call(this, id, projection, options, result);
             }
             return result;
         });
     }
     deleteOne(conditions, options = {}, inject) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (typeof __classPrivateFieldGet(this, _preDeleteOne) === 'function') {
-                yield __classPrivateFieldGet(this, _preDeleteOne).call(this, conditions, options, inject);
+            if (typeof this.$preDeleteOne === 'function') {
+                yield this.$preDeleteOne.call(this, conditions, options, inject);
             }
             let result = yield this.model.findOneAndDelete.call(this.model, conditions, options);
-            if (typeof __classPrivateFieldGet(this, _afterDeleteOne) === 'function') {
-                result = __classPrivateFieldGet(this, _afterDeleteOne).call(this, conditions, options, inject, result);
+            if (typeof this.$afterDeleteOne === 'function') {
+                result = this.$afterDeleteOne.call(this, conditions, options, inject, result);
             }
             return result;
         });
     }
     delete(conditions, options = {}, inject) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (typeof __classPrivateFieldGet(this, _preDeleteMany) === 'function') {
-                yield __classPrivateFieldGet(this, _preDeleteMany).call(this, conditions, options, inject);
+            if (typeof this.$preDeleteMany === 'function') {
+                yield this.$preDeleteMany.call(this, conditions, options, inject);
             }
             let result = yield this.model.deleteMany.call(this.model, conditions, options);
-            if (typeof __classPrivateFieldGet(this, _afterDeleteMany) === 'function') {
-                result = yield __classPrivateFieldGet(this, _afterDeleteMany).call(this, conditions, options, inject, result);
+            if (typeof this.$afterDeleteMany === 'function') {
+                result = yield this.$afterDeleteMany.call(this, conditions, options, inject, result);
             }
             return result;
         });
@@ -286,24 +265,24 @@ class Provider {
     // CREATE
     createOne(doc, inject) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (typeof __classPrivateFieldGet(this, _preCreateOne) === 'function') {
-                yield __classPrivateFieldGet(this, _preCreateOne).call(this, doc, inject);
+            if (typeof this.$preCreateOne === 'function') {
+                yield this.$preCreateOne.call(this, doc, inject);
             }
             let result = yield new this.model(doc).save();
-            if (typeof __classPrivateFieldGet(this, _afterCreateOne) === 'function') {
-                result = yield __classPrivateFieldGet(this, _afterCreateOne).call(this, doc, inject, result);
+            if (typeof this.$afterCreateOne === 'function') {
+                result = yield this.$afterCreateOne.call(this, doc, inject, result);
             }
             return result;
         });
     }
     createMany(docs, options = {}, inject) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (typeof __classPrivateFieldGet(this, _preCreateMany) === 'function') {
-                yield __classPrivateFieldGet(this, _preCreateMany).call(this, docs, options, inject);
+            if (typeof this.$preCreateMany === 'function') {
+                yield this.$preCreateMany.call(this, docs, options, inject);
             }
             let result = yield this.model.insertMany.call(this.model, docs, options);
-            if (typeof __classPrivateFieldGet(this, _afterCreateMany) === 'function') {
-                result = yield __classPrivateFieldGet(this, _afterCreateMany).call(this, docs, options, inject, result);
+            if (typeof this.$afterCreateMany === 'function') {
+                result = yield this.$afterCreateMany.call(this, docs, options, inject, result);
             }
             return result;
         });
@@ -311,31 +290,31 @@ class Provider {
     // UPDATE
     update(conditions, data, options = {}, inject) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (typeof __classPrivateFieldGet(this, _preUpdateMany) === 'function') {
-                yield __classPrivateFieldGet(this, _preUpdateMany).call(this, conditions, data, options, inject);
+            if (typeof this.$preUpdateMany === 'function') {
+                yield this.$preUpdateMany.call(this, conditions, data, options, inject);
             }
             let result = yield this.model.updateMany(conditions, data, Object.assign({ new: true, setDefaultsOnInsert: true, upsert: false }, (options || {})));
-            if (typeof __classPrivateFieldGet(this, _afterUpdateMany) === 'function') {
-                result = yield __classPrivateFieldGet(this, _afterUpdateMany).call(this, conditions, data, options, inject, result);
+            if (typeof this.$afterUpdateMany === 'function') {
+                result = yield this.$afterUpdateMany.call(this, conditions, data, options, inject, result);
             }
             return result;
         });
     }
     updateOne(condition, data, options = {}, inject) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (typeof __classPrivateFieldGet(this, _preUpdateOne) === 'function') {
-                yield __classPrivateFieldGet(this, _preUpdateOne).call(this, condition, data, options, inject);
+            if (typeof this.$preUpdateOne === 'function') {
+                yield this.$preUpdateOne.call(this, condition, data, options, inject);
             }
             let result = yield this.model.findOneAndUpdate(condition, data, Object.assign({ new: true, setDefaultsOnInsert: true, upsert: false }, options));
-            if (typeof __classPrivateFieldGet(this, _afterUpdateOne) === 'function') {
-                result = yield __classPrivateFieldGet(this, _afterUpdateOne).call(this, condition, data, options, inject, result);
+            if (typeof this.$afterUpdateOne === 'function') {
+                result = yield this.$afterUpdateOne.call(this, condition, data, options, inject, result);
             }
             return result;
         });
     }
 }
 exports.Provider = Provider;
-_model = new WeakMap(), _preCreateOne = new WeakMap(), _preCreateMany = new WeakMap(), _preUpdateOne = new WeakMap(), _preUpdateMany = new WeakMap(), _preDeleteOne = new WeakMap(), _preDeleteMany = new WeakMap(), _preFind = new WeakMap(), _preFindOne = new WeakMap(), _preFindById = new WeakMap(), _afterCreateOne = new WeakMap(), _afterCreateMany = new WeakMap(), _afterUpdateOne = new WeakMap(), _afterUpdateMany = new WeakMap(), _afterDeleteOne = new WeakMap(), _afterDeleteMany = new WeakMap(), _afterFind = new WeakMap(), _afterFindOne = new WeakMap(), _afterFindById = new WeakMap();
+_model = new WeakMap();
 function formatPagination(pagination) {
     pagination.page = Number(pagination.page) || 1;
     pagination.pageSize = Number(pagination.pageSize) || 10;
