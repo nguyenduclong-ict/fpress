@@ -32,14 +32,22 @@ export default function (
     middleware: MiddlewareOptions
 ) {
     const m = validateMiddlewareOptions(middleware)
-    router.get('/find', ...m.all, ...m.find, provider.restGetFind)
-    router.post('/find-body', ...m.all, ...m.find, provider.resFindBody)
-    router.get('/', ...m.all, ...m.list, provider.restGetList)
-    router.post('/list', ...m.all, ...m.list, provider.restPostList)
+    // Find
+    router.get('/find', ...m.all, ...m.find, provider.restFind('query'))
+    router.post('/find', ...m.all, ...m.find, provider.restFind('body'))
+    // Find one
+    router.post('/find-one', ...m.all, ...m.find, provider.restFindOne('query'))
+    router.get('/find-one', ...m.all, ...m.find, provider.restFindOne('body'))
+    // List
+    router.get('/', ...m.all, ...m.list, provider.restList('query'))
+    router.post('/list', ...m.all, ...m.list, provider.restList('body'))
+    // Create
     router.post('/', ...m.all, ...m.create, provider.restCreateOne)
     router.post('/multiple', ...m.all, ...m.create, provider.restCreateMany)
+    // Update
     router.put('/:id', ...m.all, ...m.update, provider.restUpdateOne)
     router.put('/', ...m.all, ...m.update, provider.restUpdateMany)
+    // Delete
     router.delete('/:id', ...m.all, ...m.delete, provider.restDeleteOne)
     router.delete('/', ...m.all, ...m.delete, provider.restDeleteMany)
 }
