@@ -83,6 +83,7 @@ export class Provider {
                 result
             )
         }
+        return result
     }
     async findById(id, projection, options) {
         if (typeof this.#preFindById === 'function') {
@@ -228,11 +229,18 @@ export class Provider {
     // REST API
     restFind = (target = 'query') => async (req, res, next) => {
         try {
-            let { query, populate, projection } = req[target] as FindParams
+            let { query, populate, projection, sort } = req[
+                target
+            ] as FindParams
             query = parseJSON(query)
             populate = parseJSON(populate)
             projection = parseJSON(projection)
-            const data = await this.find(query, projection, { populate })
+            const data = await this.find(
+                query,
+                projection,
+                { populate, sort },
+                { req }
+            )
             res.json(data)
         } catch (error) {
             logger.error(
@@ -259,7 +267,12 @@ export class Provider {
             query = parseJSON(query)
             populate = parseJSON(populate)
             projection = parseJSON(projection)
-            const data = await this.findOne(query, projection, { populate })
+            const data = await this.findOne(
+                query,
+                projection,
+                { populate },
+                { req }
+            )
             res.json(data)
         } catch (error) {
             logger.error(
@@ -295,16 +308,12 @@ export class Provider {
             populate = parseJSON(populate)
             projection = parseJSON(projection)
             pagination = parseJSON(pagination)
-            sort = parseJSON(sort)
             // end prams
-            const options: any = { populate }
-            if (sort) {
-                options.sort = sort
-            }
+            const options: any = { populate, sort }
             formatPagination(pagination)
             options.skip = (pagination.page - 1) * pagination.pageSize
             options.limit = pagination.pageSize
-            const task = this.find(query, projection, options)
+            const task = this.find(query, projection, options, { req })
             const [docs, total] = await Promise.all([
                 task,
                 this.model.countDocuments(query),
@@ -314,7 +323,7 @@ export class Provider {
                 page: pagination.page,
                 pageSize: pagination.pageSize,
                 total,
-                totalPages: Math.ceil(pagination.total / pagination.pageSize),
+                totalPages: Math.ceil(total / pagination.pageSize),
             }
             res.json(result)
         } catch (error) {
@@ -336,7 +345,7 @@ export class Provider {
     restCreateOne = async (req, res, next) => {
         try {
             const data = req.body
-            const doc = await this.createOne(data)
+            const doc = await this.createOne(data, { req })
             res.json(doc)
         } catch (error) {
             logger.error(`restCreate ${this.model.name} Error`, req.path, error)

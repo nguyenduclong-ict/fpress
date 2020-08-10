@@ -56,11 +56,11 @@ class Provider {
         // REST API
         this.restFind = (target = 'query') => (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
-                let { query, populate, projection } = req[target];
+                let { query, populate, projection, sort } = req[target];
                 query = parseJSON(query);
                 populate = parseJSON(populate);
                 projection = parseJSON(projection);
-                const data = yield this.find(query, projection, { populate });
+                const data = yield this.find(query, projection, { populate, sort }, { req });
                 res.json(data);
             }
             catch (error) {
@@ -78,7 +78,7 @@ class Provider {
                 query = parseJSON(query);
                 populate = parseJSON(populate);
                 projection = parseJSON(projection);
-                const data = yield this.findOne(query, projection, { populate });
+                const data = yield this.findOne(query, projection, { populate }, { req });
                 res.json(data);
             }
             catch (error) {
@@ -103,16 +103,12 @@ class Provider {
                 populate = parseJSON(populate);
                 projection = parseJSON(projection);
                 pagination = parseJSON(pagination);
-                sort = parseJSON(sort);
                 // end prams
-                const options = { populate };
-                if (sort) {
-                    options.sort = sort;
-                }
+                const options = { populate, sort };
                 formatPagination(pagination);
                 options.skip = (pagination.page - 1) * pagination.pageSize;
                 options.limit = pagination.pageSize;
-                const task = this.find(query, projection, options);
+                const task = this.find(query, projection, options, { req });
                 const [docs, total] = yield Promise.all([
                     task,
                     this.model.countDocuments(query),
@@ -122,7 +118,7 @@ class Provider {
                     page: pagination.page,
                     pageSize: pagination.pageSize,
                     total,
-                    totalPages: Math.ceil(pagination.total / pagination.pageSize),
+                    totalPages: Math.ceil(total / pagination.pageSize),
                 };
                 res.json(result);
             }
@@ -138,7 +134,7 @@ class Provider {
         this.restCreateOne = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const data = req.body;
-                const doc = yield this.createOne(data);
+                const doc = yield this.createOne(data, { req });
                 res.json(doc);
             }
             catch (error) {
@@ -248,6 +244,7 @@ class Provider {
             if (typeof __classPrivateFieldGet(this, _afterFind) === 'function') {
                 result = yield __classPrivateFieldGet(this, _afterFind).call(this, conditions, projection, options, inject, result);
             }
+            return result;
         });
     }
     findById(id, projection, options) {

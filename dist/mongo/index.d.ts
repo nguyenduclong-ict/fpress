@@ -4,7 +4,7 @@ export declare class Provider {
     constructor(model: any);
     get model(): Model<Document, {}>;
     findOne(conditions: any, projection?: any, options?: any, inject?: {}): Promise<any>;
-    find(conditions: any, projection?: any, options?: any, inject?: {}): Promise<void>;
+    find(conditions: any, projection?: any, options?: any, inject?: {}): Promise<any>;
     findById(id: any, projection: any, options: any): Promise<any>;
     deleteOne(conditions: any, options: {}, inject: any): Promise<any>;
     delete(conditions: any, options: {}, inject: any): Promise<any>;

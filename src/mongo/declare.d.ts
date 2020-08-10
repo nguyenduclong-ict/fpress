@@ -17,6 +17,7 @@ export interface FindParams {
     query
     populate
     projection
+    sort
 }
 
 export interface UpdateManyParams {
