@@ -37,7 +37,7 @@ class Provider {
             try {
                 let { query, populate, projection, sort } = req[target];
                 query = parseJSON(query);
-                populate = parseJSON(populate);
+                populate = buildPopulate(populate);
                 projection = parseJSON(projection);
                 const data = yield this.find(query, projection, { populate, sort }, { req, res, next });
                 res.json(data);
@@ -55,7 +55,7 @@ class Provider {
             try {
                 let { query, populate, projection } = req[target];
                 query = parseJSON(query);
-                populate = parseJSON(populate);
+                populate = buildPopulate(populate);
                 projection = parseJSON(projection);
                 const data = yield this.findOne(query, projection, { populate }, { req, res, next });
                 res.json(data);
@@ -75,7 +75,7 @@ class Provider {
                 let { query, populate, projection, pagination, sort } = req[target];
                 // parse params
                 query = parseJSON(query);
-                populate = parseJSON(populate);
+                populate = buildPopulate(populate);
                 projection = parseJSON(projection);
                 pagination = parseJSON(pagination);
                 // end prams
@@ -343,4 +343,20 @@ function parseJSON(data) {
     }
     catch (error) { }
     return data;
+}
+function buildPopulate(populate) {
+    populate = buildPopulate(populate);
+    if (!Array.isArray(populate)) {
+        populate = [populate];
+    }
+    populate = populate.map((item) => {
+        if (typeof item === 'string') {
+            let [path, select, model] = item.split(':');
+            return { path, select, model };
+        }
+        else {
+            return item;
+        }
+    });
+    return populate;
 }

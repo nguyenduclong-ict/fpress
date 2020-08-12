@@ -242,7 +242,7 @@ export class Provider {
                 target
             ] as FindParams
             query = parseJSON(query)
-            populate = parseJSON(populate)
+            populate = buildPopulate(populate)
             projection = parseJSON(projection)
             const data = await this.find(
                 query,
@@ -274,7 +274,7 @@ export class Provider {
         try {
             let { query, populate, projection } = req[target] as FindParams
             query = parseJSON(query)
-            populate = parseJSON(populate)
+            populate = buildPopulate(populate)
             projection = parseJSON(projection)
             const data = await this.findOne(
                 query,
@@ -310,7 +310,7 @@ export class Provider {
             ] as ListParams
             // parse params
             query = parseJSON(query)
-            populate = parseJSON(populate)
+            populate = buildPopulate(populate)
             projection = parseJSON(projection)
             pagination = parseJSON(pagination)
             // end prams
@@ -496,4 +496,23 @@ function parseJSON(data) {
         data = typeof data === 'string' ? JSON.parse(data) : data
     } catch (error) {}
     return data
+}
+
+function buildPopulate(populate) {
+    populate = buildPopulate(populate)
+
+    if (!Array.isArray(populate)) {
+        populate = [populate]
+    }
+
+    populate = populate.map((item) => {
+        if (typeof item === 'string') {
+            let [path, select, model] = item.split(':')
+            return { path, select, model }
+        } else {
+            return item
+        }
+    })
+
+    return populate
 }
