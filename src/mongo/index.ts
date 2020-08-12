@@ -499,7 +499,7 @@ function parseJSON(data) {
 }
 
 function buildPopulate(populate) {
-    populate = buildPopulate(populate)
+    populate = parseJSON(populate)
 
     if (!Array.isArray(populate)) {
         populate = [populate]
