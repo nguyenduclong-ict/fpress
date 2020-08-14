@@ -6,7 +6,7 @@ class Module {
     exports
 }
 
-export function requireAll(directory, currentDeep = 1, maxDeep = 1) {
+export function requireAll(directory, currentDeep = 0, maxDeep = 1) {
     const modules: Module[] = []
     if (!path.isAbsolute(directory)) {
         directory = path.resolve(require.main.path, directory)
