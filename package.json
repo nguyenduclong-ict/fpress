@@ -1,6 +1,9 @@
 {
     "name": "fpress",
     "version": "0.0.1",
+    "files": [
+        "dist/*"
+    ],
     "main": "dist",
     "bin": "dist/cli/index.js",
     "private": true,

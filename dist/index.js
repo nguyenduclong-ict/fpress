@@ -25,3 +25,7 @@ exports.CreateValidator = index_1.default;
 exports.checks = index_1.checks;
 const alias_1 = __importDefault(require("./alias"));
 exports.registerAlias = alias_1.default;
+const utils_1 = require("./utils");
+exports.getColor = utils_1.getColor;
+exports.importAll = utils_1.importAll;
+exports.randomColor = utils_1.randomColor;
