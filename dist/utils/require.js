@@ -8,7 +8,7 @@ class Module {
         this.path = '';
     }
 }
-function requireAll(directory, currentDeep = 0, maxDeep = 1) {
+function requireAll(directory, currentDeep = 1, maxDeep = 1) {
     const modules = [];
     if (!path.isAbsolute(directory)) {
         directory = path.resolve(require.main.path, directory);
