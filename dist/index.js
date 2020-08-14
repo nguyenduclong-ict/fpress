@@ -29,3 +29,4 @@ const utils_1 = require("./utils");
 exports.getColor = utils_1.getColor;
 exports.importAll = utils_1.importAll;
 exports.randomColor = utils_1.randomColor;
+exports.requireAll = utils_1.requireAll;

@@ -5,7 +5,7 @@ import { Provider } from './mongo'
 import crud from './server/crud'
 import CreateValidator, { checks } from './validator/index'
 import registerAlias from './alias'
-import { getColor, importAll, randomColor } from './utils'
+import { getColor, importAll, randomColor, requireAll } from './utils'
 export {
     CustomError,
     fPress,
@@ -18,4 +18,5 @@ export {
     importAll,
     randomColor,
     getColor,
+    requireAll,
 }
