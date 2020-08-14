@@ -3,5 +3,5 @@ declare class Module {
     path: string;
     exports: any;
 }
-export declare function requireAll(directory: any, currentDeep?: number, maxDeep?: number): Module[];
+export declare function requireAll(directory: any, maxDeep?: number, currentDeep?: number): Module[];
 export {};

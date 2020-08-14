@@ -8,7 +8,7 @@ class Module {
         this.path = '';
     }
 }
-function requireAll(directory, currentDeep = 0, maxDeep = 1) {
+function requireAll(directory, maxDeep = 1, currentDeep = 0) {
     const modules = [];
     if (!path.isAbsolute(directory)) {
         directory = path.resolve(require.main.path, directory);
@@ -23,7 +23,7 @@ function requireAll(directory, currentDeep = 0, maxDeep = 1) {
     }
     else if (currentDeep < maxDeep) {
         fs.readdirSync(directory).forEach((f) => {
-            modules.push(...requireAll(path.resolve(directory, f), currentDeep + 1, maxDeep));
+            modules.push(...requireAll(path.resolve(directory, f), maxDeep, currentDeep + 1));
         });
     }
     return modules;
