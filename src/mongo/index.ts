@@ -315,7 +315,7 @@ export class Provider {
             pagination = parseJSON(pagination)
             // end prams
             const options: any = { populate, sort }
-            formatPagination(pagination)
+            pagination = formatPagination(pagination)
             options.skip = (pagination.page - 1) * pagination.pageSize
             options.limit = pagination.pageSize
 
