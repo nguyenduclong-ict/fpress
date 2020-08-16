@@ -483,7 +483,7 @@ export class Provider {
     }
 }
 
-function formatPagination(pagination: Pagination): Pagination {
+function formatPagination(pagination: Pagination = {} as any): Pagination {
     pagination.page = Number(pagination.page) || 1
     pagination.pageSize = Number(pagination.pageSize) || 10
     pagination.total = Number(pagination.total) || 0

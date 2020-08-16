@@ -330,7 +330,7 @@ class Provider {
 }
 exports.Provider = Provider;
 _model = new WeakMap();
-function formatPagination(pagination) {
+function formatPagination(pagination = {}) {
     pagination.page = Number(pagination.page) || 1;
     pagination.pageSize = Number(pagination.pageSize) || 10;
     pagination.total = Number(pagination.total) || 0;
