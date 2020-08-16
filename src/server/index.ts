@@ -63,10 +63,8 @@ class FPress {
                     return res.status(code).json({
                         status: 'error',
                         code,
-                        message:
-                            error.data?.errors?.[0] ||
-                            error.data?.message ||
-                            error.message,
+                        message: error.message,
+                        errors: error.data,
                         type: error.type,
                     })
                 } else {
