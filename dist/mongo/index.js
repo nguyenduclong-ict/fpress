@@ -80,7 +80,7 @@ class Provider {
                 pagination = parseJSON(pagination);
                 // end prams
                 const options = { populate, sort };
-                formatPagination(pagination);
+                pagination = formatPagination(pagination);
                 options.skip = (pagination.page - 1) * pagination.pageSize;
                 options.limit = pagination.pageSize;
                 const task = this.find(query, projection, options, {
