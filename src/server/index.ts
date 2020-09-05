@@ -85,7 +85,7 @@ class FPress {
         )
         const host = process.env.HOST || 'localhost'
         this.server.listen(port, host, () => {
-            logger.info('Server listen on port', port)
+            logger.info(`Server listen on port ${host}:${port}`)
         })
     }
 }

@@ -91,7 +91,7 @@ class FPress {
             const port = Number(process.env.PORT || Math.floor(Math.random() * 65536));
             const host = process.env.HOST || 'localhost';
             this.server.listen(port, host, () => {
-                logger_1.default.info('Server listen on port', port);
+                logger_1.default.info(`Server listen on port ${host}:${port}`);
             });
         });
     }
