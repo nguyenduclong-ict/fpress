@@ -31,8 +31,8 @@ export declare class Provider {
     update(conditions: any, data: any, options: {}, inject: any): Promise<any>;
     updateOne(condition: any, data: any, options: {}, inject: any): Promise<Document>;
     restFind: (target?: string) => (req: any, res: any, next: any) => Promise<void>;
-    restFindOne: (target?: "body" | "query") => (req: any, res: any, next: any) => Promise<void>;
-    restList: (target?: "body" | "query") => (req: any, res: any, next: any) => Promise<void>;
+    restFindOne: (target?: 'query' | 'body') => (req: any, res: any, next: any) => Promise<void>;
+    restList: (target?: 'query' | 'body') => (req: any, res: any, next: any) => Promise<void>;
     restCreateOne: (req: any, res: any, next: any) => Promise<void>;
     restCreateMany: (req: any, res: any, next: any) => Promise<void>;
     restUpdateOne: (req: any, res: any, next: any) => Promise<void>;

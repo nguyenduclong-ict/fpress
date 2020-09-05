@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.randomColor = exports.getColor = void 0;
 const sample_1 = __importDefault(require("lodash/sample"));
 const colors_1 = __importDefault(require("./constants/colors"));
 function getColor(name, range = '500') {

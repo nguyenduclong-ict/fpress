@@ -80,8 +80,11 @@ class FPress {
         })
 
         // Start server
-        const port = process.env.PORT || Math.floor(Math.random() * 65536)
-        this.server.listen(port, () => {
+        const port = Number(
+            process.env.PORT || Math.floor(Math.random() * 65536)
+        )
+        const host = process.env.HOST || 'localhost'
+        this.server.listen(port, host, () => {
             logger.info('Server listen on port', port)
         })
     }

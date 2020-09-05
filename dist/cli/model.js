@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.generateModel = void 0;
 const files_1 = __importDefault(require("./files"));
 const fs = require('fs');
 const Path = require('path');

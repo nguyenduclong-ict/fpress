@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.icons = exports.texts = void 0;
 exports.default = {
     red: {
         '50': '#ffebee',

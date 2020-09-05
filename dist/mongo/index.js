@@ -26,6 +26,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var _model;
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Provider = void 0;
 const logger_1 = __importDefault(require("../utils/logger"));
 const custom_error_1 = __importDefault(require("../error/custom-error"));
 class Provider {
@@ -352,6 +353,9 @@ function buildPopulate(populate) {
     populate = populate.map((item) => {
         if (typeof item === 'string') {
             let [path, select, model] = item.split(':');
+            path = path || undefined;
+            select = select || undefined;
+            model = model || undefined;
             return { path, select, model };
         }
         else {

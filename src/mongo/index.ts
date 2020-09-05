@@ -508,6 +508,9 @@ function buildPopulate(populate) {
     populate = populate.map((item) => {
         if (typeof item === 'string') {
             let [path, select, model] = item.split(':')
+            path = path || undefined
+            select = select || undefined
+            model = model || undefined
             return { path, select, model }
         } else {
             return item
