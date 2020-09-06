@@ -52,7 +52,7 @@ export default function CreateValidator(
         const data = options.convert
             ? JSON.parse(req[options.target])
             : req[options.target]
-        const errors = await check(schema, data, req)
+        const errors = await check(schema, data, '', req)
         if (errors.length) {
             return next(
                 new CustomError({

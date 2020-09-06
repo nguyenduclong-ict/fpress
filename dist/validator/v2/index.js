@@ -73,7 +73,7 @@ function CreateValidator(schema, options) {
         const data = options.convert
             ? JSON.parse(req[options.target])
             : req[options.target];
-        const errors = yield check(schema, data, req);
+        const errors = yield check(schema, data, '', req);
         if (errors.length) {
             return next(new custom_error_1.default({
                 message: 'VALIDATE ERROR',
