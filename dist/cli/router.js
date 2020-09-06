@@ -19,7 +19,7 @@ module.exports = router;
 `.trim();
 const VALIDATOR_FILE = `
 const { CreateValidator, checks: c } = require("fpress");
-module.exports.ValidateBody = CreateValidator({}, "body");
+module.exports.ValidateBody = CreateValidator({});
 `.trim();
 function generateRouter(path = '') {
     const routerPath = Path.join(files_1.default.getCurrentDir(), 'routes', path);
