@@ -1,5 +1,5 @@
 import { ValidationSchema } from './provider';
-export declare function check(schema: ValidationSchema, data?: {}, path?: string): Promise<any>;
+export declare function check(schema: ValidationSchema, data?: {}, path?: string, req?: any): Promise<any>;
 interface CreateValidatorOptions {
     convert: boolean;
     target: 'body' | 'query' | 'param';

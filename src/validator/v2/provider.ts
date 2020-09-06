@@ -5,7 +5,8 @@ import { hasError } from './utils'
 
 type CheckFunction = (
     value,
-    path
+    path,
+    req?
 ) => Promise<string | string[]> | string | string[]
 
 export class ValidationProvider {
@@ -154,14 +155,14 @@ export function Enum(...list) {
 
 // Check and return all error
 export function all(...checks: ValidationProvider[]) {
-    return new ValidationProvider(async function (value, path) {
+    return new ValidationProvider(async function (value, path, req) {
         if (!this.stop) {
             const errors = await Promise.all(
                 checks.map((check) => {
                     if (!check.isAsync) {
-                        return Promise.resolve(check.func(value, path))
+                        return Promise.resolve(check.func(value, path, req))
                     } else {
-                        return check.func(value, path)
+                        return check.func(value, path, req)
                     }
                 })
             )
@@ -172,9 +173,9 @@ export function all(...checks: ValidationProvider[]) {
                     checks.map(async (check) => {
                         let error
                         if (check.isAsync) {
-                            error = await check.func(value, path)
+                            error = await check.func(value, path, req)
                         } else {
-                            error = check.func(value, path)
+                            error = check.func(value, path, req)
                         }
                         if (hasError(error)) {
                             const e = new Error() as any
@@ -192,13 +193,13 @@ export function all(...checks: ValidationProvider[]) {
 
 // Check and return first error
 export function some(...checks) {
-    return new ValidationProvider(async function (value, path) {
+    return new ValidationProvider(async function (value, path, req) {
         const errors = await Promise.all(
             checks.map((check) => {
                 if (!check.isAsync) {
-                    return Promise.resolve(check.func(value, path))
+                    return Promise.resolve(check.func(value, path, req))
                 } else {
-                    return check.func(value, path)
+                    return check.func(value, path, req)
                 }
             })
         )

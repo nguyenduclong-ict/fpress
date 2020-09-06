@@ -4,7 +4,12 @@ import CustomError from '../../error/custom-error'
 import { hasError } from './utils'
 import { isAsyncFunction } from '../../utils'
 
-export async function check(schema: ValidationSchema, data = {}, path = '') {
+export async function check(
+    schema: ValidationSchema,
+    data = {},
+    path = '',
+    req?
+) {
     const tasks = []
     Object.keys(schema).forEach((key: string) => {
         const itemPath = [path, key].filter((item) => !!item).join('.')
@@ -15,14 +20,14 @@ export async function check(schema: ValidationSchema, data = {}, path = '') {
                 new Promise((rs) => {
                     if (provider.isAsync || isAsyncFunction(provider.func)) {
                         // @ts-ignore
-                        provider.func(value, itemPath).then(rs)
+                        provider.func(value, itemPath, req).then(rs)
                     } else {
-                        rs(provider.func(value, itemPath))
+                        rs(provider.func(value, itemPath, req))
                     }
                 })
             )
         } else {
-            tasks.push(check(provider, value, itemPath))
+            tasks.push(check(provider, value, itemPath, req))
         }
     })
 
@@ -47,7 +52,7 @@ export default function CreateValidator(
         const data = options.convert
             ? JSON.parse(req[options.target])
             : req[options.target]
-        const errors = await check(schema, data)
+        const errors = await check(schema, data, req)
         if (errors.length) {
             return next(
                 new CustomError({

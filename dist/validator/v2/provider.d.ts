@@ -1,4 +1,4 @@
-declare type CheckFunction = (value: any, path: any) => Promise<string | string[]> | string | string[];
+declare type CheckFunction = (value: any, path: any, req?: any) => Promise<string | string[]> | string | string[];
 export declare class ValidationProvider {
     func: CheckFunction;
     isAsync: any;

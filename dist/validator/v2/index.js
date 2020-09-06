@@ -37,7 +37,7 @@ const provider_1 = require("./provider");
 const custom_error_1 = __importDefault(require("../../error/custom-error"));
 const utils_1 = require("./utils");
 const utils_2 = require("../../utils");
-function check(schema, data = {}, path = '') {
+function check(schema, data = {}, path = '', req) {
     return __awaiter(this, void 0, void 0, function* () {
         const tasks = [];
         Object.keys(schema).forEach((key) => {
@@ -48,15 +48,15 @@ function check(schema, data = {}, path = '') {
                 tasks.push(new Promise((rs) => {
                     if (provider.isAsync || utils_2.isAsyncFunction(provider.func)) {
                         // @ts-ignore
-                        provider.func(value, itemPath).then(rs);
+                        provider.func(value, itemPath, req).then(rs);
                     }
                     else {
-                        rs(provider.func(value, itemPath));
+                        rs(provider.func(value, itemPath, req));
                     }
                 }));
             }
             else {
-                tasks.push(check(provider, value, itemPath));
+                tasks.push(check(provider, value, itemPath, req));
             }
         });
         let errors = yield Promise.all(tasks);
@@ -73,7 +73,7 @@ function CreateValidator(schema, options) {
         const data = options.convert
             ? JSON.parse(req[options.target])
             : req[options.target];
-        const errors = yield check(schema, data);
+        const errors = yield check(schema, data, req);
         if (errors.length) {
             return next(new custom_error_1.default({
                 message: 'VALIDATE ERROR',

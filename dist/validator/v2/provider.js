@@ -153,15 +153,15 @@ function Enum(...list) {
 exports.Enum = Enum;
 // Check and return all error
 function all(...checks) {
-    return new ValidationProvider(function (value, path) {
+    return new ValidationProvider(function (value, path, req) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!this.stop) {
                 const errors = yield Promise.all(checks.map((check) => {
                     if (!check.isAsync) {
-                        return Promise.resolve(check.func(value, path));
+                        return Promise.resolve(check.func(value, path, req));
                     }
                     else {
-                        return check.func(value, path);
+                        return check.func(value, path, req);
                     }
                 }));
                 return _.flatMap(errors.filter(utils_2.hasError));
@@ -171,10 +171,10 @@ function all(...checks) {
                     yield Promise.all(checks.map((check) => __awaiter(this, void 0, void 0, function* () {
                         let error;
                         if (check.isAsync) {
-                            error = yield check.func(value, path);
+                            error = yield check.func(value, path, req);
                         }
                         else {
-                            error = check.func(value, path);
+                            error = check.func(value, path, req);
                         }
                         if (utils_2.hasError(error)) {
                             const e = new Error();
@@ -193,14 +193,14 @@ function all(...checks) {
 exports.all = all;
 // Check and return first error
 function some(...checks) {
-    return new ValidationProvider(function (value, path) {
+    return new ValidationProvider(function (value, path, req) {
         return __awaiter(this, void 0, void 0, function* () {
             const errors = yield Promise.all(checks.map((check) => {
                 if (!check.isAsync) {
-                    return Promise.resolve(check.func(value, path));
+                    return Promise.resolve(check.func(value, path, req));
                 }
                 else {
-                    return check.func(value, path);
+                    return check.func(value, path, req);
                 }
             }));
             if (errors.findIndex((e) => !utils_2.hasError(e)) < 0) {
