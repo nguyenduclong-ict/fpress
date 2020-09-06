@@ -12,3 +12,7 @@ export function nonAccentVietnamese(str: string) {
     str = str.replace(/\u02C6|\u0306|\u031B/g, '') // Â, Ê, Ă, Ơ, Ư
     return str
 }
+
+export function isAsyncFunction(f) {
+    return f.constructor.name === 'AsyncFunction' || f instanceof Promise
+}

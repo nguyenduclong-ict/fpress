@@ -3,7 +3,8 @@ import CustomError from './error/custom-error'
 import logger from './utils/logger'
 import { Provider } from './mongo'
 import crud from './server/crud'
-import CreateValidator, { checks, check } from './validator/index'
+import CreateValidator from './validator/v2'
+import * as checks from './validator/v2/provider'
 import registerAlias from './alias'
 import { getColor, importAll, randomColor, requireAll } from './utils'
 export {
@@ -13,7 +14,6 @@ export {
     Provider,
     // Validator
     checks,
-    check,
     CreateValidator,
     // End validator
     crud,

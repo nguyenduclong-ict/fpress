@@ -1,6 +1,10 @@
 const Module = require('module');
 const path = require('path');
-const packageJson = require(path.resolve(require.main.path, 'package.json'));
+let packageJson;
+try {
+    packageJson = require(path.resolve(require.main.path, 'package.json'));
+}
+catch (error) { }
 const originalRequire = Module.prototype.require;
 module.exports = function registerAlias(alias = packageJson._alias) {
     Module.prototype.require = function () {
