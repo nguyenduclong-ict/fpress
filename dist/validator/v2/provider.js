@@ -89,7 +89,7 @@ function max(m) {
 exports.max = max;
 function length(length) {
     return all(some(string(), array()), new ValidationProvider(function (value, path) {
-        if (!(value === null || value === void 0 ? void 0 : value.length)) {
+        if (!(value === null || value === void 0 ? void 0 : value.length) || value.length !== length) {
             return `{${path}} length must be ${length}`;
         }
     })).set({ stop: true, name: 'length' });

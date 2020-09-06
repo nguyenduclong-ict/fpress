@@ -81,7 +81,7 @@ export function length(length) {
     return all(
         some(string(), array()),
         new ValidationProvider(function (value, path) {
-            if (!value?.length) {
+            if (!value?.length || value.length !== length) {
                 return `{${path}} length must be ${length}`
             }
         })

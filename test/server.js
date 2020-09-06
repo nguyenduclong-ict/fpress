@@ -4,7 +4,7 @@ app.use(express.json())
 
 const { CustomError, CreateValidator, checks: c } = require('../dist')
 const validation = CreateValidator({
-    name: c.minLength(4),
+    name: c.length(4),
     items: c.array({
         name: c.custom((value, path) => {
             return 'custom error'
