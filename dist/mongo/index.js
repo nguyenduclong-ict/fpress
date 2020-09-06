@@ -247,7 +247,7 @@ class Provider {
             return result;
         });
     }
-    deleteOne(conditions, options = {}, inject) {
+    deleteOne(conditions, options = {}, inject = {}) {
         return __awaiter(this, void 0, void 0, function* () {
             if (typeof this.$preDeleteOne === 'function') {
                 yield this.$preDeleteOne.call(this, conditions, options, inject);
@@ -260,7 +260,7 @@ class Provider {
             return result;
         });
     }
-    delete(conditions, options = {}, inject) {
+    delete(conditions, options = {}, inject = {}) {
         return __awaiter(this, void 0, void 0, function* () {
             if (typeof this.$preDeleteMany === 'function') {
                 yield this.$preDeleteMany.call(this, conditions, options, inject);
@@ -274,7 +274,7 @@ class Provider {
         });
     }
     // CREATE
-    createOne(doc, inject) {
+    createOne(doc, inject = {}) {
         return __awaiter(this, void 0, void 0, function* () {
             if (typeof this.$preCreateOne === 'function') {
                 yield this.$preCreateOne.call(this, doc, inject);
@@ -288,7 +288,7 @@ class Provider {
             return result;
         });
     }
-    createMany(docs, options = {}, inject) {
+    createMany(docs, options = {}, inject = {}) {
         return __awaiter(this, void 0, void 0, function* () {
             if (typeof this.$preCreateMany === 'function') {
                 yield this.$preCreateMany.call(this, docs, options, inject);
@@ -302,7 +302,7 @@ class Provider {
         });
     }
     // UPDATE
-    update(conditions, data, options = {}, inject) {
+    update(conditions, data, options = {}, inject = {}) {
         return __awaiter(this, void 0, void 0, function* () {
             if (typeof this.$preUpdateMany === 'function') {
                 yield this.$preUpdateMany.call(this, conditions, data, options, inject);
@@ -315,7 +315,7 @@ class Provider {
             return result;
         });
     }
-    updateOne(condition, data, options = {}, inject) {
+    updateOne(condition, data, options = {}, inject = {}) {
         return __awaiter(this, void 0, void 0, function* () {
             if (typeof this.$preUpdateOne === 'function') {
                 yield this.$preUpdateOne.call(this, condition, data, options, inject);

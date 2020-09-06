@@ -102,7 +102,7 @@ export class Provider {
         }
         return result
     }
-    async deleteOne(conditions, options = {}, inject) {
+    async deleteOne(conditions, options = {}, inject = {}) {
         if (typeof this.$preDeleteOne === 'function') {
             await this.$preDeleteOne.call(this, conditions, options, inject)
         }
@@ -123,7 +123,7 @@ export class Provider {
         }
         return result
     }
-    async delete(conditions, options = {}, inject) {
+    async delete(conditions, options = {}, inject = {}) {
         if (typeof this.$preDeleteMany === 'function') {
             await this.$preDeleteMany.call(this, conditions, options, inject)
         }
@@ -145,7 +145,7 @@ export class Provider {
         return result
     }
     // CREATE
-    async createOne(doc, inject?) {
+    async createOne(doc, inject = {}) {
         if (typeof this.$preCreateOne === 'function') {
             await this.$preCreateOne.call(this, doc, inject)
         }
@@ -157,7 +157,7 @@ export class Provider {
         }
         return result
     }
-    async createMany(docs, options = {}, inject) {
+    async createMany(docs, options = {}, inject = {}) {
         if (typeof this.$preCreateMany === 'function') {
             await this.$preCreateMany.call(this, docs, options, inject)
         }
@@ -176,7 +176,7 @@ export class Provider {
     }
 
     // UPDATE
-    async update(conditions, data, options = {}, inject) {
+    async update(conditions, data, options = {}, inject = {}) {
         if (typeof this.$preUpdateMany === 'function') {
             await this.$preUpdateMany.call(
                 this,
@@ -205,7 +205,7 @@ export class Provider {
         }
         return result
     }
-    async updateOne(condition, data, options = {}, inject) {
+    async updateOne(condition, data, options = {}, inject = {}) {
         if (typeof this.$preUpdateOne === 'function') {
             await this.$preUpdateOne.call(
                 this,

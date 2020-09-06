@@ -24,12 +24,12 @@ export declare class Provider {
     findOne(conditions: any, projection?: any, options?: any, inject?: {}): Promise<any>;
     find(conditions: any, projection?: any, options?: any, inject?: {}): Promise<any>;
     findById(id: any, projection: any, options: any): Promise<any>;
-    deleteOne(conditions: any, options: {}, inject: any): Promise<any>;
-    delete(conditions: any, options: {}, inject: any): Promise<any>;
-    createOne(doc: any, inject?: any): Promise<Document>;
-    createMany(docs: any, options: {}, inject: any): Promise<any>;
-    update(conditions: any, data: any, options: {}, inject: any): Promise<any>;
-    updateOne(condition: any, data: any, options: {}, inject: any): Promise<Document>;
+    deleteOne(conditions: any, options?: {}, inject?: {}): Promise<any>;
+    delete(conditions: any, options?: {}, inject?: {}): Promise<any>;
+    createOne(doc: any, inject?: {}): Promise<Document>;
+    createMany(docs: any, options?: {}, inject?: {}): Promise<any>;
+    update(conditions: any, data: any, options?: {}, inject?: {}): Promise<any>;
+    updateOne(condition: any, data: any, options?: {}, inject?: {}): Promise<Document>;
     restFind: (target?: string) => (req: any, res: any, next: any) => Promise<void>;
     restFindOne: (target?: 'query' | 'body') => (req: any, res: any, next: any) => Promise<void>;
     restList: (target?: 'query' | 'body') => (req: any, res: any, next: any) => Promise<void>;
