@@ -88,6 +88,14 @@ export function length(length) {
     ).set({ stop: true, name: 'length' })
 }
 
+export function equal(data) {
+    new ValidationProvider(function (value, path) {
+        if (!_.isEqual(data, value)) {
+            return `{${path}} length must be ${length}`
+        }
+    }).set({ name: 'Equal' })
+}
+
 export function minLength(length) {
     return all(
         some(string(), array()),

@@ -28,7 +28,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.custom = exports.some = exports.all = exports.Enum = exports.array = exports.object = exports.maxLength = exports.minLength = exports.length = exports.max = exports.min = exports.number = exports.string = exports.required = exports.ValidationProvider = void 0;
+exports.custom = exports.some = exports.all = exports.Enum = exports.array = exports.object = exports.maxLength = exports.minLength = exports.equal = exports.length = exports.max = exports.min = exports.number = exports.string = exports.required = exports.ValidationProvider = void 0;
 const _ = __importStar(require("lodash"));
 const utils_1 = require("../../utils");
 const _1 = require(".");
@@ -95,6 +95,14 @@ function length(length) {
     })).set({ stop: true, name: 'length' });
 }
 exports.length = length;
+function equal(data) {
+    new ValidationProvider(function (value, path) {
+        if (!_.isEqual(data, value)) {
+            return `{${path}} length must be ${length}`;
+        }
+    }).set({ name: 'Equal' });
+}
+exports.equal = equal;
 function minLength(length) {
     return all(some(string(), array()), new ValidationProvider(function (value, path) {
         if (!value || value.length < length) {
