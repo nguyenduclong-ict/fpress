@@ -1,5 +1,12 @@
 import * as _ from 'lodash'
 
+export function required(v, p) {
+    if (!!v) {
+        return `{${p}} required`
+    }
+    return
+}
+
 export function string(v, p) {
     if (typeof v !== 'string') {
         return `{${p}} must be a string`
@@ -96,30 +103,11 @@ export function any(...checks) {
     }
 }
 
-export function check(schema, data, path = '', errors = []) {
-    // tslint:disable-next-line: forin
-    for (const key in schema) {
-        // function check
-        const p = [path, key].filter((e) => !!e).join('.')
-        const c = schema[key]
-        if (typeof c !== 'function') {
-            // if not is function check, check deep
-            check(c, _.get(data, key), p, errors)
-        } else {
-            // if is function check
-            errors.push(c(_.get(data, key), p))
-        }
-    }
-    return _.uniq(_.compact(_.flattenDeep(errors)))
-}
-
-export function checkAny(schema) {}
-
 /**
  * check v at leatest is instance of types
  * @param v variable
  * @param types type for check
  */
-function is(v, ...types) {
+export function is(v, ...types) {
     return types.some((t) => v instanceof t)
 }

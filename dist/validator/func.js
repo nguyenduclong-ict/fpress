@@ -19,8 +19,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkAny = exports.check = exports.any = exports.all = exports.equal = exports.inList = exports.maxLength = exports.minLength = exports.max = exports.min = exports.date = exports.array = exports.object = exports.number = exports.string = void 0;
+exports.is = exports.any = exports.all = exports.equal = exports.inList = exports.maxLength = exports.minLength = exports.max = exports.min = exports.date = exports.array = exports.object = exports.number = exports.string = exports.required = void 0;
 const _ = __importStar(require("lodash"));
+function required(v, p) {
+    if (!!v) {
+        return `{${p}} required`;
+    }
+    return;
+}
+exports.required = required;
 function string(v, p) {
     if (typeof v !== 'string') {
         return `{${p}} must be a string`;
@@ -124,26 +131,6 @@ function any(...checks) {
     };
 }
 exports.any = any;
-function check(schema, data, path = '', errors = []) {
-    // tslint:disable-next-line: forin
-    for (const key in schema) {
-        // function check
-        const p = [path, key].filter((e) => !!e).join('.');
-        const c = schema[key];
-        if (typeof c !== 'function') {
-            // if not is function check, check deep
-            check(c, _.get(data, key), p, errors);
-        }
-        else {
-            // if is function check
-            errors.push(c(_.get(data, key), p));
-        }
-    }
-    return _.uniq(_.compact(_.flattenDeep(errors)));
-}
-exports.check = check;
-function checkAny(schema) { }
-exports.checkAny = checkAny;
 /**
  * check v at leatest is instance of types
  * @param v variable
@@ -152,3 +139,4 @@ exports.checkAny = checkAny;
 function is(v, ...types) {
     return types.some((t) => v instanceof t);
 }
+exports.is = is;

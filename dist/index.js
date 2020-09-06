@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.requireAll = exports.getColor = exports.randomColor = exports.importAll = exports.registerAlias = exports.crud = exports.CreateValidator = exports.checks = exports.Provider = exports.logger = exports.fPress = exports.CustomError = void 0;
+exports.requireAll = exports.getColor = exports.randomColor = exports.importAll = exports.registerAlias = exports.crud = exports.CreateValidator = exports.check = exports.checks = exports.Provider = exports.logger = exports.fPress = exports.CustomError = void 0;
 const server_1 = __importDefault(require("./server"));
 exports.fPress = server_1.default;
 const custom_error_1 = __importDefault(require("./error/custom-error"));
@@ -36,6 +36,7 @@ exports.crud = crud_1.default;
 const index_1 = __importStar(require("./validator/index"));
 exports.CreateValidator = index_1.default;
 Object.defineProperty(exports, "checks", { enumerable: true, get: function () { return index_1.checks; } });
+Object.defineProperty(exports, "check", { enumerable: true, get: function () { return index_1.check; } });
 const alias_1 = __importDefault(require("./alias"));
 exports.registerAlias = alias_1.default;
 const utils_1 = require("./utils");
