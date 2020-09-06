@@ -55,7 +55,7 @@ function check(schema, data = {}, path = '', req) {
                     }
                 }));
             }
-            else {
+            else if (provider) {
                 tasks.push(check(provider, value, itemPath, req));
             }
         });

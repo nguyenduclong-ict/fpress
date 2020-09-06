@@ -26,7 +26,7 @@ export async function check(
                     }
                 })
             )
-        } else {
+        } else if (provider) {
             tasks.push(check(provider, value, itemPath, req))
         }
     })

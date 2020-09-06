@@ -90,7 +90,7 @@ export function length(length) {
 }
 
 export function equal(data) {
-    new ValidationProvider(function (value, path) {
+    return new ValidationProvider(function (value, path) {
         if (!_.isEqual(data, value)) {
             return `{${path}} length must be ${length}`
         }

@@ -16,7 +16,7 @@ export declare function number(): ValidationProvider;
 export declare function min(m: any): ValidationProvider;
 export declare function max(m: any): ValidationProvider;
 export declare function length(length: any): ValidationProvider;
-export declare function equal(data: any): void;
+export declare function equal(data: any): ValidationProvider;
 export declare function minLength(length: any): ValidationProvider;
 export declare function maxLength(length: any): ValidationProvider;
 export declare function object(): ValidationProvider;
