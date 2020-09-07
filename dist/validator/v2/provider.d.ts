@@ -1,15 +1,26 @@
 declare type CheckFunction = (value: any, path: any, req?: any) => Promise<string | string[]> | string | string[];
 export declare class ValidationProvider {
-    func: CheckFunction;
+    _func: CheckFunction;
     isAsync: any;
     stop: any;
     name: '';
+    optional: false;
+    convert: any;
+    convertFunctions: {
+        date: (value: any) => Date;
+        object: (value: any) => any;
+        array: (value: any) => any;
+        number: (value: any) => number;
+        string: (value: any) => string;
+    };
     constructor(func: CheckFunction, isAsync?: any);
+    get func(): CheckFunction;
     set(options: any): this;
 }
 export interface ValidationSchema {
     [x: string]: ValidationProvider | ValidationSchema;
 }
+export declare function date(): ValidationProvider;
 export declare function required(): ValidationProvider;
 export declare function string(): ValidationProvider;
 export declare function number(): ValidationProvider;

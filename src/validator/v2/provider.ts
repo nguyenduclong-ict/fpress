@@ -9,18 +9,43 @@ type CheckFunction = (
     req?
 ) => Promise<string | string[]> | string | string[]
 
+function isValidDate(d) {
+    return d instanceof Date && !isNaN(d as any)
+}
+
 export class ValidationProvider {
-    func: CheckFunction
+    _func: CheckFunction
     isAsync
     stop
     name: ''
+    optional: false
+    convert
+
+    convertFunctions = {
+        date: (value) => new Date(value),
+        object: (value) => JSON.parse(value),
+        array: (value) => JSON.parse(value),
+        number: (value) => Number(value),
+        string: (value) => String(value),
+    }
 
     constructor(func: CheckFunction, isAsync?) {
-        this.func = func
+        this._func = func
         if (isAsync === undefined) {
             isAsync = isAsyncFunction(func)
         }
         this.isAsync = isAsync
+    }
+
+    public get func(): CheckFunction {
+        return (value, path, req) => {
+            if (value === undefined) {
+                return
+            }
+            if (this.convert) {
+            }
+            return this._func.call(this, value, path, req)
+        }
     }
 
     set(options) {
@@ -31,6 +56,14 @@ export class ValidationProvider {
 
 export interface ValidationSchema {
     [x: string]: ValidationProvider | ValidationSchema
+}
+
+export function date() {
+    return new ValidationProvider(function (value, path) {
+        if (!isValidDate(value)) {
+            return `${path} must be date`
+        }
+    }).set({ name: 'date' })
 }
 
 export function required() {
@@ -94,7 +127,7 @@ export function equal(data) {
         if (!_.isEqual(data, value)) {
             return `{${path}} length must be ${length}`
         }
-    }).set({ name: 'Equal' })
+    }).set({ name: 'equal' })
 }
 
 export function minLength(length) {
@@ -150,12 +183,17 @@ export function Enum(...list) {
                 .map((e) => JSON.stringify(e))
                 .join(',')}]`.replace(/\"/g, "'")
         }
-    }).set({ name: 'Enum' })
+    }).set({ name: 'enum' })
 }
 
 // Check and return all error
 export function all(...checks: ValidationProvider[]) {
     return new ValidationProvider(async function (value, path, req) {
+        checks.forEach((check) => {
+            if (check.convert === undefined) {
+                check.convert = this.convert
+            }
+        })
         if (!this.stop) {
             const errors = await Promise.all(
                 checks.map((check) => {
@@ -188,7 +226,7 @@ export function all(...checks: ValidationProvider[]) {
                 return error.data
             }
         }
-    }).set({ name: 'All', isAsync: true })
+    }).set({ name: 'all', isAsync: true })
 }
 
 // Check and return first error

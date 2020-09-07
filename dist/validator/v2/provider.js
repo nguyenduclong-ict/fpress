@@ -28,18 +28,38 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.custom = exports.some = exports.all = exports.Enum = exports.array = exports.object = exports.maxLength = exports.minLength = exports.equal = exports.length = exports.max = exports.min = exports.number = exports.string = exports.required = exports.ValidationProvider = void 0;
+exports.custom = exports.some = exports.all = exports.Enum = exports.array = exports.object = exports.maxLength = exports.minLength = exports.equal = exports.length = exports.max = exports.min = exports.number = exports.string = exports.required = exports.date = exports.ValidationProvider = void 0;
 const _ = __importStar(require("lodash"));
 const utils_1 = require("../../utils");
 const _1 = require(".");
 const utils_2 = require("./utils");
+function isValidDate(d) {
+    return d instanceof Date && !isNaN(d);
+}
 class ValidationProvider {
     constructor(func, isAsync) {
-        this.func = func;
+        this.convertFunctions = {
+            date: (value) => new Date(value),
+            object: (value) => JSON.parse(value),
+            array: (value) => JSON.parse(value),
+            number: (value) => Number(value),
+            string: (value) => String(value),
+        };
+        this._func = func;
         if (isAsync === undefined) {
             isAsync = utils_1.isAsyncFunction(func);
         }
         this.isAsync = isAsync;
+    }
+    get func() {
+        return (value, path, req) => {
+            if (value === undefined) {
+                return;
+            }
+            if (this.convert) {
+            }
+            return this._func.call(this, value, path, req);
+        };
     }
     set(options) {
         Object.assign(this, options);
@@ -47,6 +67,14 @@ class ValidationProvider {
     }
 }
 exports.ValidationProvider = ValidationProvider;
+function date() {
+    return new ValidationProvider(function (value, path) {
+        if (!isValidDate(value)) {
+            return `${path} must be date`;
+        }
+    }).set({ name: 'date' });
+}
+exports.date = date;
 function required() {
     return new ValidationProvider(function (value, path) {
         if (!value) {
@@ -100,7 +128,7 @@ function equal(data) {
         if (!_.isEqual(data, value)) {
             return `{${path}} length must be ${length}`;
         }
-    }).set({ name: 'Equal' });
+    }).set({ name: 'equal' });
 }
 exports.equal = equal;
 function minLength(length) {
@@ -148,13 +176,18 @@ function Enum(...list) {
                 .map((e) => JSON.stringify(e))
                 .join(',')}]`.replace(/\"/g, "'");
         }
-    }).set({ name: 'Enum' });
+    }).set({ name: 'enum' });
 }
 exports.Enum = Enum;
 // Check and return all error
 function all(...checks) {
     return new ValidationProvider(function (value, path, req) {
         return __awaiter(this, void 0, void 0, function* () {
+            checks.forEach((check) => {
+                if (check.convert === undefined) {
+                    check.convert = this.convert;
+                }
+            });
             if (!this.stop) {
                 const errors = yield Promise.all(checks.map((check) => {
                     if (!check.isAsync) {
@@ -188,7 +221,7 @@ function all(...checks) {
                 }
             }
         });
-    }).set({ name: 'All', isAsync: true });
+    }).set({ name: 'all', isAsync: true });
 }
 exports.all = all;
 // Check and return first error
