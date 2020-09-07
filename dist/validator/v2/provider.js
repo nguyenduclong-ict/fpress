@@ -53,10 +53,11 @@ class ValidationProvider {
     }
     get func() {
         return (value, path, req) => {
-            if (value === undefined) {
+            if (this.optional && value === undefined) {
                 return;
             }
-            if (this.convert) {
+            if (this.convert && this.convertFunctions[this.name]) {
+                value = this.convertFunctions[this.name](value);
             }
             return this._func.call(this, value, path, req);
         };
