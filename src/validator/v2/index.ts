@@ -38,6 +38,8 @@ export async function check(
 interface CreateValidatorOptions {
     convert: boolean
     target: 'body' | 'query' | 'param'
+    pick: string | string[]
+    delete: string | string[]
 }
 
 export default function CreateValidator(
@@ -45,14 +47,17 @@ export default function CreateValidator(
     options: CreateValidatorOptions
 ) {
     return async (req, res, next) => {
+        // Init default options
         options = _.defaultsDeep(options || {}, {
             convert: false,
             target: 'body',
         })
+
         const data = options.convert
             ? JSON.parse(req[options.target])
             : req[options.target]
         const errors = await check(schema, data, '', req)
+
         if (errors.length) {
             return next(
                 new CustomError({
@@ -62,6 +67,32 @@ export default function CreateValidator(
                 })
             )
         }
+
+        // pick and delete
+        if (options.pick) {
+            req[options.target] = _.pick(
+                req[options.target],
+                ...getArr(options.pick)
+            )
+        }
+
+        if (options.delete) {
+            req[options.target] = _.omit(
+                req[options.target],
+                ...getArr(options.delete)
+            )
+        }
+
         next()
     }
+}
+
+function getArr(data, separator = ',') {
+    if (typeof data === 'string') {
+        return data.split(separator)
+    }
+    if (Array.isArray(data)) {
+        return data
+    }
+    return [data]
 }

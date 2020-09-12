@@ -66,6 +66,7 @@ function check(schema, data = {}, path = '', req) {
 exports.check = check;
 function CreateValidator(schema, options) {
     return (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+        // Init default options
         options = _.defaultsDeep(options || {}, {
             convert: false,
             target: 'body',
@@ -81,7 +82,23 @@ function CreateValidator(schema, options) {
                 data: errors,
             }));
         }
+        // pick and delete
+        if (options.pick) {
+            req[options.target] = _.pick(req[options.target], ...getArr(options.pick));
+        }
+        if (options.delete) {
+            req[options.target] = _.omit(req[options.target], ...getArr(options.delete));
+        }
         next();
     });
 }
 exports.default = CreateValidator;
+function getArr(data, separator = ',') {
+    if (typeof data === 'string') {
+        return data.split(separator);
+    }
+    if (Array.isArray(data)) {
+        return data;
+    }
+    return [data];
+}
