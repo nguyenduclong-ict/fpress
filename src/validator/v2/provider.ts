@@ -47,7 +47,7 @@ export class ValidationProvider {
 
     public get func(): CheckFunction {
         return (value, path, req) => {
-            if (this.optional && value === undefined) {
+            if (this.optional && (value === undefined || value === null)) {
                 return
             }
             if (this.convert && this.convertFunctions[this.name]) {
