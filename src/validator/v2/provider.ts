@@ -13,13 +13,21 @@ function isValidDate(d) {
     return d instanceof Date && !isNaN(d as any)
 }
 
+interface SetValidationProvider {
+    isAsync?: boolean
+    stop?: boolean
+    name?: string
+    optional?: boolean
+    convert?: boolean
+}
+
 export class ValidationProvider {
     _func: CheckFunction
-    isAsync
-    stop
-    name: ''
-    optional: false
-    convert
+    isAsync: boolean
+    stop: boolean
+    name: string
+    optional: boolean
+    convert: boolean
 
     convertFunctions = {
         date: (value) => new Date(value),
@@ -49,7 +57,7 @@ export class ValidationProvider {
         }
     }
 
-    set(options) {
+    set(options: SetValidationProvider) {
         Object.assign(this, options)
         return this
     }
