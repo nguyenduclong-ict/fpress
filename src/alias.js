@@ -1,12 +1,15 @@
 const Module = require('module')
 const path = require('path')
-let packageJson
-try {
-    packageJson = require(path.resolve(require.main.path, 'package.json'))
-} catch (error) {}
+
 const originalRequire = Module.prototype.require
 
-module.exports = function registerAlias(alias = packageJson._alias) {
+module.exports = function registerAlias(alias = packageJson._alias, root) {
+    root = root || require.main.path
+    let packageJson
+    try {
+        packageJson = require(path.resolve(root, 'package.json'))
+    } catch (error) {}
+
     Module.prototype.require = function () {
         for (const key in alias) {
             if (alias.hasOwnProperty(key)) {
