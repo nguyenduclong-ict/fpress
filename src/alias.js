@@ -3,11 +3,12 @@ const path = require('path')
 
 const originalRequire = Module.prototype.require
 
-module.exports = function registerAlias(alias = packageJson._alias, root) {
+module.exports = function registerAlias(alias, root) {
     root = root || require.main.path
     let packageJson
     try {
         packageJson = require(path.resolve(root, 'package.json'))
+        alias = alias || packageJson._alias
     } catch (error) {}
 
     Module.prototype.require = function () {
