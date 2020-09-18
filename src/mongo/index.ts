@@ -1,4 +1,12 @@
-import { Model, Document } from 'mongoose'
+import {
+    Model,
+    Document,
+    QueryFindBaseOptions,
+    QueryFindOneAndRemoveOptions,
+    ModelOptions,
+    ModelUpdateOptions,
+    QueryFindOneAndUpdateOptions,
+} from 'mongoose'
 import { Pagination, ListParams, FindParams, UpdateManyParams } from './declare'
 import logger from '../utils/logger'
 import CustomError from '../error/custom-error'
@@ -41,7 +49,13 @@ export class Provider {
     get model() {
         return this.#model
     }
-    async findOne(conditions, projection?, options?, inject = {}) {
+
+    async findOne(
+        conditions,
+        projection?,
+        options?: QueryFindBaseOptions,
+        inject = {}
+    ) {
         if (typeof this.$preFindOne === 'function') {
             this.$preFindOne.call(this, conditions, projection, options, inject)
         }
@@ -64,7 +78,13 @@ export class Provider {
         }
         return result
     }
-    async find(conditions, projection?, options?, inject = {}) {
+
+    async find(
+        conditions,
+        projection?,
+        options?: QueryFindBaseOptions & { sort },
+        inject = {}
+    ) {
         if (typeof this.$preFind === 'function') {
             this.$preFind.call(this, conditions, projection, options, inject)
         }
@@ -74,6 +94,7 @@ export class Provider {
             projection,
             options
         )
+
         if (typeof this.$afterFind === 'function') {
             result =
                 (await this.$afterFind.call(
@@ -87,7 +108,8 @@ export class Provider {
         }
         return result
     }
-    async findById(id, projection, options) {
+
+    async findById(id, projection, options: QueryFindBaseOptions) {
         if (typeof this.$preFindById === 'function') {
             this.$preFindById.call(this, id, projection, options)
         }
@@ -102,7 +124,12 @@ export class Provider {
         }
         return result
     }
-    async deleteOne(conditions, options = {}, inject = {}) {
+
+    async deleteOne(
+        conditions,
+        options: QueryFindOneAndRemoveOptions = {},
+        inject = {}
+    ) {
         if (typeof this.$preDeleteOne === 'function') {
             await this.$preDeleteOne.call(this, conditions, options, inject)
         }
@@ -123,7 +150,8 @@ export class Provider {
         }
         return result
     }
-    async delete(conditions, options = {}, inject = {}) {
+
+    async delete(conditions, options: ModelOptions = {}, inject = {}) {
         if (typeof this.$preDeleteMany === 'function') {
             await this.$preDeleteMany.call(this, conditions, options, inject)
         }
@@ -144,6 +172,7 @@ export class Provider {
         }
         return result
     }
+
     // CREATE
     async createOne(doc, inject = {}) {
         if (typeof this.$preCreateOne === 'function') {
@@ -157,7 +186,12 @@ export class Provider {
         }
         return result
     }
-    async createMany(docs, options = {}, inject = {}) {
+
+    async createMany(
+        docs,
+        options: { ordered?: boolean; rawResult?: boolean } & ModelOptions = {},
+        inject = {}
+    ) {
         if (typeof this.$preCreateMany === 'function') {
             await this.$preCreateMany.call(this, docs, options, inject)
         }
@@ -176,7 +210,12 @@ export class Provider {
     }
 
     // UPDATE
-    async update(conditions, data, options = {}, inject = {}) {
+    async update(
+        conditions,
+        data,
+        options: ModelUpdateOptions = {},
+        inject = {}
+    ) {
         if (typeof this.$preUpdateMany === 'function') {
             await this.$preUpdateMany.call(
                 this,
@@ -205,7 +244,13 @@ export class Provider {
         }
         return result
     }
-    async updateOne(condition, data, options = {}, inject = {}) {
+
+    async updateOne(
+        condition,
+        data,
+        options: QueryFindOneAndUpdateOptions = {},
+        inject = {}
+    ) {
         if (typeof this.$preUpdateOne === 'function') {
             await this.$preUpdateOne.call(
                 this,

@@ -1,4 +1,4 @@
-import { Model, Document } from 'mongoose';
+import { Model, Document, QueryFindBaseOptions, QueryFindOneAndRemoveOptions, ModelOptions, ModelUpdateOptions, QueryFindOneAndUpdateOptions } from 'mongoose';
 export declare class Provider {
     #private;
     $preCreateOne: (doc: any, inject: any) => any;
@@ -21,15 +21,20 @@ export declare class Provider {
     $afterFindById: (id: any, projection: any, options: any, result: any) => any;
     constructor(model: any);
     get model(): Model<Document, {}>;
-    findOne(conditions: any, projection?: any, options?: any, inject?: {}): Promise<any>;
-    find(conditions: any, projection?: any, options?: any, inject?: {}): Promise<any>;
-    findById(id: any, projection: any, options: any): Promise<any>;
-    deleteOne(conditions: any, options?: {}, inject?: {}): Promise<any>;
-    delete(conditions: any, options?: {}, inject?: {}): Promise<any>;
+    findOne(conditions: any, projection?: any, options?: QueryFindBaseOptions, inject?: {}): Promise<any>;
+    find(conditions: any, projection?: any, options?: QueryFindBaseOptions & {
+        sort: any;
+    }, inject?: {}): Promise<any>;
+    findById(id: any, projection: any, options: QueryFindBaseOptions): Promise<any>;
+    deleteOne(conditions: any, options?: QueryFindOneAndRemoveOptions, inject?: {}): Promise<any>;
+    delete(conditions: any, options?: ModelOptions, inject?: {}): Promise<any>;
     createOne(doc: any, inject?: {}): Promise<Document>;
-    createMany(docs: any, options?: {}, inject?: {}): Promise<any>;
-    update(conditions: any, data: any, options?: {}, inject?: {}): Promise<any>;
-    updateOne(condition: any, data: any, options?: {}, inject?: {}): Promise<Document>;
+    createMany(docs: any, options?: {
+        ordered?: boolean;
+        rawResult?: boolean;
+    } & ModelOptions, inject?: {}): Promise<any>;
+    update(conditions: any, data: any, options?: ModelUpdateOptions, inject?: {}): Promise<any>;
+    updateOne(condition: any, data: any, options?: QueryFindOneAndUpdateOptions, inject?: {}): Promise<Document>;
     restFind: (target?: string) => (req: any, res: any, next: any) => Promise<void>;
     restFindOne: (target?: 'query' | 'body') => (req: any, res: any, next: any) => Promise<void>;
     restList: (target?: 'query' | 'body') => (req: any, res: any, next: any) => Promise<void>;
