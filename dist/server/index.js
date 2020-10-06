@@ -43,7 +43,7 @@ class FPress {
     }
     registerAllService(path) {
         path = path || files_1.default.getCurrentDir() + '/services';
-        const modules = import_all_1.default(path);
+        const modules = import_all_1.default(path, /.+.service..+/);
         modules.forEach(({ module }) => this.registerService(module));
         return this;
     }

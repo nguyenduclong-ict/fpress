@@ -26,7 +26,7 @@ class FPress {
 
     registerAllService(path) {
         path = path || files.getCurrentDir() + '/services'
-        const modules = importAll(path)
+        const modules = importAll(path, /.+.service..+/)
         modules.forEach(({ module }) => this.registerService(module))
         return this
     }
