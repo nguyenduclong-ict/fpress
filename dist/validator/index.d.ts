@@ -5,5 +5,5 @@ interface Options {
     removeKeys: string[];
     selectKeys: string[];
 }
-export default function CreateValidator(rules: Rules, options: Options): (req: any, res: any, next: any) => void;
+export default function CreateValidator(rules: Rules | ((source: any, req: any, res: any, next: any) => Rules), options: Options): (req: any, res: any, next: any) => void;
 export {};

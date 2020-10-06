@@ -5,28 +5,31 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const async_validator_1 = __importDefault(require("async-validator"));
 const lodash_1 = require("lodash");
-const src_1 = require("src");
+const custom_error_1 = __importDefault(require("../error/custom-error"));
 function CreateValidator(rules, options) {
     options = lodash_1.defaultsDeep(options, {
         target: 'body',
         parse: true,
         removeKeys: [],
     });
+    let validator;
+    if (typeof rules !== 'function') {
+        validator = new async_validator_1.default(rules);
+    }
     return (req, res, next) => {
         let source = lodash_1.get(req, options.target);
         if (options.parse) {
-            source = JSON.parse(source);
+            try {
+                source = JSON.parse(source);
+            }
+            catch (error) { }
         }
-        let validator;
         if (typeof rules === 'function') {
-            validator = new async_validator_1.default(rules(source));
+            validator = new async_validator_1.default(rules(source, req, res, next));
         }
-        else {
-            validator = new async_validator_1.default(rules);
-        }
-        validator.valiate(source, (errors, fields) => {
+        validator.validate(source, (errors, fields) => {
             if (errors) {
-                return next(new src_1.CustomError({
+                return next(new custom_error_1.default({
                     message: 'VALIDATE ERROR',
                     code: 422,
                     data: errors,

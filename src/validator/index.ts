@@ -1,6 +1,6 @@
 import Schema, { Rules } from 'async-validator'
 import { get, defaultsDeep, unset, set, pick } from 'lodash'
-import { CustomError } from 'src'
+import CustomError from '../error/custom-error'
 
 interface Options {
     target: 'body' | 'query'
@@ -9,27 +9,36 @@ interface Options {
     selectKeys: string[]
 }
 
-export default function CreateValidator(rules: Rules, options: Options) {
+export default function CreateValidator(
+    rules: Rules | ((source, req, res, next) => Rules),
+    options: Options
+) {
     options = defaultsDeep(options, {
         target: 'body',
         parse: true,
         removeKeys: [],
     })
 
+    let validator
+
+    if (typeof rules !== 'function') {
+        validator = new Schema(rules)
+    }
+
     return (req, res, next) => {
         let source = get(req, options.target)
+
         if (options.parse) {
-            source = JSON.parse(source)
+            try {
+                source = JSON.parse(source)
+            } catch (error) {}
         }
 
-        let validator
         if (typeof rules === 'function') {
-            validator = new Schema((rules as any)(source))
-        } else {
-            validator = new Schema(rules)
+            validator = new Schema((rules as any)(source, req, res, next))
         }
 
-        validator.valiate(source, (errors, fields) => {
+        validator.validate(source, (errors, fields) => {
             if (errors) {
                 return next(
                     new CustomError({

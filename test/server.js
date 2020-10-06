@@ -2,15 +2,31 @@ const express = require('express')
 const app = express()
 app.use(express.json())
 
-const { CustomError, CreateValidator, checks: c } = require('../dist')
-const validation = CreateValidator({
-    name: c.length(4),
-    items: c.array({
-        name: c.custom((value, path) => {
-            return 'custom error'
-        }),
-        type: c.Enum('red', { color: 'blue' }),
-    }),
+const { CustomError, CreateValidator } = require('../dist')
+const validation = CreateValidator((source) => {
+    return {
+        name: { type: 'string' },
+        items: {
+            type: 'array',
+            defaultField: {
+                type: 'object',
+                fields: {
+                    name: {
+                        type: 'string',
+                    },
+                },
+            },
+        },
+        info: {
+            type: 'object',
+            fields: {
+                gender: {
+                    type: 'number',
+                    required: true,
+                },
+            },
+        },
+    }
 })
 
 app.post('/test', validation, (req, res) => {
