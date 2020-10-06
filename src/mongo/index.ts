@@ -260,12 +260,14 @@ export class Provider {
                 inject
             )
         }
+
         let result = await this.model.findOneAndUpdate(condition, data, {
             new: true,
             setDefaultsOnInsert: true,
             upsert: false,
             ...options,
         })
+
         if (typeof this.$afterUpdateOne === 'function') {
             result =
                 (await this.$afterUpdateOne.call(

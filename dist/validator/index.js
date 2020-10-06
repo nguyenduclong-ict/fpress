@@ -1,58 +1,51 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.check = exports.checks = void 0;
-const checks = __importStar(require("./func"));
-exports.checks = checks;
-const custom_error_1 = __importDefault(require("../error/custom-error"));
-const _ = __importStar(require("lodash"));
-function check(schema, data, path = '', errors = []) {
-    // tslint:disable-next-line: forin
-    for (const key in schema) {
-        // function check
-        const p = [path, key].filter((e) => !!e).join('.');
-        const c = schema[key];
-        if (typeof c !== 'function') {
-            // if not is function check, check deep
-            check(c, _.get(data, key), p, errors);
+const async_validator_1 = __importDefault(require("async-validator"));
+const lodash_1 = require("lodash");
+const src_1 = require("src");
+function CreateValidator(rules, options) {
+    options = lodash_1.defaultsDeep(options, {
+        target: 'body',
+        parse: true,
+        removeKeys: [],
+    });
+    return (req, res, next) => {
+        let source = lodash_1.get(req, options.target);
+        if (options.parse) {
+            source = JSON.parse(source);
+        }
+        let validator;
+        if (typeof rules === 'function') {
+            validator = new async_validator_1.default(rules(source));
         }
         else {
-            // if is function check
-            errors.push(c(_.get(data, key), p));
+            validator = new async_validator_1.default(rules);
         }
-    }
-    return _.uniq(_.compact(_.flattenDeep(errors)));
-}
-exports.check = check;
-function CreateValidator(schema, target) {
-    return function handle(req, res, next) {
-        const data = req[target];
-        const errors = check(schema, data);
-        if (errors.length) {
-            return next(new custom_error_1.default({ message: errors[0], code: 422, data: errors }));
-        }
-        next();
+        validator.valiate(source, (errors, fields) => {
+            if (errors) {
+                return next(new src_1.CustomError({
+                    message: 'VALIDATE ERROR',
+                    code: 422,
+                    data: errors,
+                }));
+            }
+            else {
+                // pass
+                if (options.removeKeys.length) {
+                    options.removeKeys.forEach((key) => {
+                        lodash_1.unset(source, key);
+                    });
+                }
+                if (options.selectKeys) {
+                    source = lodash_1.pick(source, ...options.selectKeys);
+                }
+                lodash_1.set(req, options.target, source);
+                next();
+            }
+        });
     };
 }
 exports.default = CreateValidator;
