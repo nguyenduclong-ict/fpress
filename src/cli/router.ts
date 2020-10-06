@@ -14,7 +14,7 @@ module.exports = router;
 `.trim()
 
 const VALIDATOR_FILE = `
-const { CreateValidator, checks: c } = require("fpress");
+const { CreateValidator } = require("fpress");
 module.exports.ValidateBody = CreateValidator({});
 `.trim()
 
