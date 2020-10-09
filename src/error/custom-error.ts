@@ -35,4 +35,5 @@ export const formatErrorCode = (code) => {
     if (code < 100 || code > 599) {
         code = 500
     }
+    return code
 }
