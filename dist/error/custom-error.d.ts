@@ -9,3 +9,4 @@ export default class CustomError extends Error {
         type?: string;
     });
 }
+export declare const formatErrorCode: (code: any) => void;

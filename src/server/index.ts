@@ -4,7 +4,7 @@ import logger from '../utils/logger'
 import initRouter from './router'
 import importAll from '../utils/import-all'
 import files from '../cli/files'
-import CustomError from '../error/custom-error'
+import CustomError, { formatErrorCode } from '../error/custom-error'
 import morgan from 'morgan'
 import cors from 'cors'
 
@@ -53,12 +53,7 @@ class FPress {
         this.app.use((error, req, res, next) => {
             if (error) {
                 logger.custom.error('[ROUTER ERORR]', error)
-                // error code
-                let code = error.code || 500
-                if (code < 100 || code > 599) {
-                    code = 500
-                }
-                //
+                const code = formatErrorCode(error.code)
                 if (error instanceof CustomError) {
                     return res.status(code).json({
                         status: 'error',
